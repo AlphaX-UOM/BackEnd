@@ -1,0 +1,30 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<!-- Start Page Header -->
+<div class="page-header">
+    <h1 class="title">Manage your account</h1>
+    <ol class="breadcrumb">
+
+        <li class="active">Change your account settings</li>
+    </ol>
+    <!-- Start Page Header Right Div -->
+   
+</div>
+<!-- End Page Header -->
+
+    <div class="row">
+        <div class="col-md-3">
+            @await Html.PartialAsync("_ManageNav")
+        </div>
+        <div class="col-md-9">
+            @RenderBody()
+        </div>
+    </div>
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}
+

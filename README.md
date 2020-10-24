@@ -1,3 +1,6 @@
-# TheHotelApplication
+
+# Smart Travel Planning System
+=======
+
 
 # BackEnd
