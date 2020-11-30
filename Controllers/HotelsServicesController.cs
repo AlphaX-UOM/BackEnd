@@ -1,0 +1,110 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SuggestorCodeFirstAPI;
+using SuggestorCodeFirstAPI.Models;
+
+namespace SuggestorCodeFirstAPI.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class HotelsServicesController : ControllerBase
+    {
+        private readonly RepositoryContext _context;
+
+        public HotelsServicesController(RepositoryContext context)
+        {
+            _context = context;
+        }
+
+        // GET: api/HotelsServices
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<HotelsService>>> GetHotelsServices()
+        {
+            return await _context.HotelsServices.ToListAsync();
+        }
+
+        // GET: api/HotelsServices/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<HotelsService>> GetHotelsService(Guid id)
+        {
+            var hotelsService = await _context.HotelsServices.FindAsync(id);
+
+            if (hotelsService == null)
+            {
+                return NotFound();
+            }
+
+            return hotelsService;
+        }
+
+        // PUT: api/HotelsServices/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutHotelsService(Guid id, HotelsService hotelsService)
+        {
+            if (id != hotelsService.ID)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(hotelsService).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!HotelsServiceExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // POST: api/HotelsServices
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPost]
+        public async Task<ActionResult<HotelsService>> PostHotelsService(HotelsService hotelsService)
+        {
+            _context.HotelsServices.Add(hotelsService);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetHotelsService", new { id = hotelsService.ID }, hotelsService);
+        }
+
+        // DELETE: api/HotelsServices/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<HotelsService>> DeleteHotelsService(Guid id)
+        {
+            var hotelsService = await _context.HotelsServices.FindAsync(id);
+            if (hotelsService == null)
+            {
+                return NotFound();
+            }
+
+            _context.HotelsServices.Remove(hotelsService);
+            await _context.SaveChangesAsync();
+
+            return hotelsService;
+        }
+
+        private bool HotelsServiceExists(Guid id)
+        {
+            return _context.HotelsServices.Any(e => e.ID == id);
+        }
+    }
+}
