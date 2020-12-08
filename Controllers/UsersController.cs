@@ -32,7 +32,10 @@ namespace SuggestorCodeFirstAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(Guid id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = _context.Users
+                                .Include(u => u.TransportServices)
+                                .Where(u => u.ID == id)
+                                .FirstOrDefault();
 
             if (user == null)
             {

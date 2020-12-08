@@ -25,16 +25,13 @@ namespace SuggestorCodeFirstAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("ReservationID")
+                    b.Property<Guid?>("ReservationID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("UserID")
@@ -42,7 +39,9 @@ namespace SuggestorCodeFirstAPI.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ReservationID");
+                    b.HasIndex("ReservationID")
+                        .IsUnique()
+                        .HasFilter("[ReservationID] IS NOT NULL");
 
                     b.HasIndex("UserID");
 
@@ -98,7 +97,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("EventPlannerServiceID")
+                    b.Property<Guid?>("EventPlannerServiceID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Rating")
@@ -116,28 +115,24 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.ToTable("EventPlannerServiceComments");
                 });
 
-            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.EventPlannerServiceReservation", b =>
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.HotelServiceRoomType", b =>
                 {
-                    b.Property<Guid>("ID")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid?>("HotelServiceId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("EventPlannerServiceID")
+                    b.Property<Guid?>("RoomTypeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("EventType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ReservationID")
+                    b.Property<Guid?>("HotelsServiceID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ID");
+                    b.HasKey("HotelServiceId", "RoomTypeId");
 
-                    b.HasIndex("EventPlannerServiceID");
+                    b.HasIndex("HotelsServiceID");
 
-                    b.HasIndex("ReservationID");
+                    b.HasIndex("RoomTypeId");
 
-                    b.ToTable("EventPlannerServiceReservations");
+                    b.ToTable("HotelServiceRoomTypes");
                 });
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.HotelsService", b =>
@@ -164,7 +159,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<decimal>("PricePerDay")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("RoomTypeID")
+                    b.Property<Guid?>("RoomTypeID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("UserID")
@@ -194,7 +189,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("HotelsServiceID")
+                    b.Property<Guid?>("HotelsServiceID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Rating")
@@ -212,30 +207,6 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.ToTable("HotelsServiceComments");
                 });
 
-            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.HotelsServiceReservation", b =>
-                {
-                    b.Property<Guid>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("HotelsServiceID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ReservationID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("RoomType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("HotelsServiceID");
-
-                    b.HasIndex("ReservationID");
-
-                    b.ToTable("HotelsServiceReservations");
-                });
-
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.Payment", b =>
                 {
                     b.Property<Guid>("ID")
@@ -244,9 +215,6 @@ namespace SuggestorCodeFirstAPI.Migrations
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -276,8 +244,9 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<DateTime>("CheckOut")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NumOfTravellers")
                         .HasColumnType("int");
@@ -298,6 +267,8 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("Reservations");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Reservation");
                 });
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.RoomType", b =>
@@ -375,7 +346,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("TourGuideServiceID")
+                    b.Property<Guid?>("TourGuideServiceID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("UserID")
@@ -390,32 +361,14 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.ToTable("TourGuideServiceComments");
                 });
 
-            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TourGuideServiceReservation", b =>
-                {
-                    b.Property<Guid>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ReservationID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TourGuideServiceID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ReservationID");
-
-                    b.HasIndex("TourGuideServiceID");
-
-                    b.ToTable("TourGuideServiceReservations");
-                });
-
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TransportService", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -429,15 +382,16 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<string>("Pnumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("TransportTypeID")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<decimal>("PricePerDay")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid?>("UserID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ID");
+                    b.Property<string>("VehicleType")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("TransportTypeID");
+                    b.HasKey("ID");
 
                     b.HasIndex("UserID");
 
@@ -459,7 +413,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("TransportServiceID")
+                    b.Property<Guid?>("TransportServiceID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("UserID")
@@ -474,62 +428,6 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.ToTable("TransportServiceComments");
                 });
 
-            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TransportServiceReservation", b =>
-                {
-                    b.Property<Guid>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("DropOffLocation")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DropOffTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PickUpLocation")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("PickUpTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("ReservationID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TransportServiceID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("VehicleType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ReservationID");
-
-                    b.HasIndex("TransportServiceID");
-
-                    b.ToTable("TransportServiceReservations");
-                });
-
-            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TransportType", b =>
-                {
-                    b.Property<Guid>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("PricePerDay")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("VehicleType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("TransportTypes");
-                });
-
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.User", b =>
                 {
                     b.Property<Guid>("ID")
@@ -542,7 +440,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<string>("Contact")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DateTime")
+                    b.Property<string>("DOB")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -570,7 +468,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                             ID = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
                             Address = "N0:198/3, Airport Road, Minuwangoda",
                             Contact = "0715510491",
-                            DateTime = "1996/07/27",
+                            DOB = "1996/07/27",
                             Email = "gdsudam@gmail.com",
                             FirstName = "Sudam",
                             LastName = "Yasodya",
@@ -582,22 +480,104 @@ namespace SuggestorCodeFirstAPI.Migrations
                             ID = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991871"),
                             Address = "N0:198/3, Airport Road, Minuwangoda, Gampaha",
                             Contact = "0112294169",
-                            DateTime = "1996/07/28",
+                            DOB = "1996/07/28",
                             Email = "gdsudam@gmail.com.com",
                             FirstName = "Sudama",
                             LastName = "Yasodyaa",
                             Password = "1234",
                             Role = "Customer"
+                        },
+                        new
+                        {
+                            ID = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991875"),
+                            Address = "N0:198/3, Airport Road, Malabe",
+                            Contact = "071556223",
+                            DOB = "1997/03/31",
+                            Email = "rasmi@gmail.com",
+                            FirstName = "Rasmi",
+                            LastName = "Duli",
+                            Password = "123123",
+                            Role = "ServiceProvider"
                         });
+                });
+
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.EventPlannerServiceReservation", b =>
+                {
+                    b.HasBaseType("SuggestorCodeFirstAPI.Models.Reservation");
+
+                    b.Property<Guid?>("EventPlannerServiceID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("EventType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasIndex("EventPlannerServiceID");
+
+                    b.HasDiscriminator().HasValue("EventPlannerServiceReservation");
+                });
+
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.HotelsServiceReservation", b =>
+                {
+                    b.HasBaseType("SuggestorCodeFirstAPI.Models.Reservation");
+
+                    b.Property<Guid?>("HotelsServiceID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("NoOfRooms")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RoomType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasIndex("HotelsServiceID");
+
+                    b.HasDiscriminator().HasValue("HotelsServiceReservation");
+                });
+
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TourGuideServiceReservation", b =>
+                {
+                    b.HasBaseType("SuggestorCodeFirstAPI.Models.Reservation");
+
+                    b.Property<Guid?>("TourGuideServiceID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasIndex("TourGuideServiceID");
+
+                    b.HasDiscriminator().HasValue("TourGuideServiceReservation");
+                });
+
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TransportServiceReservation", b =>
+                {
+                    b.HasBaseType("SuggestorCodeFirstAPI.Models.Reservation");
+
+                    b.Property<string>("DropOffLocation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DropOffTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PickUpLocation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PickUpTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("TransportServiceID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("VehicleType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasIndex("TransportServiceID");
+
+                    b.HasDiscriminator().HasValue("TransportServiceReservation");
                 });
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.Cancellation", b =>
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.Reservation", "Reservation")
-                        .WithMany()
-                        .HasForeignKey("ReservationID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithOne("Cancellation")
+                        .HasForeignKey("SuggestorCodeFirstAPI.Models.Cancellation", "ReservationID");
 
                     b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("Cancellations")
@@ -610,92 +590,73 @@ namespace SuggestorCodeFirstAPI.Migrations
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.EventPlannerService", b =>
                 {
-                    b.HasOne("SuggestorCodeFirstAPI.Models.User", null)
+                    b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("EventPlannerServices")
                         .HasForeignKey("UserID");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.EventPlannerServiceComment", b =>
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.EventPlannerService", "EventPlannerService")
-                        .WithMany()
-                        .HasForeignKey("EventPlannerServiceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("EventPlannerServiceComments")
+                        .HasForeignKey("EventPlannerServiceID");
 
-                    b.HasOne("SuggestorCodeFirstAPI.Models.User", null)
+                    b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("EventPlannerServiceComment")
                         .HasForeignKey("UserID");
 
                     b.Navigation("EventPlannerService");
+
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.EventPlannerServiceReservation", b =>
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.HotelServiceRoomType", b =>
                 {
-                    b.HasOne("SuggestorCodeFirstAPI.Models.EventPlannerService", "EventPlannerService")
-                        .WithMany("EventPlannerServiceReservations")
-                        .HasForeignKey("EventPlannerServiceID")
+                    b.HasOne("SuggestorCodeFirstAPI.Models.HotelsService", "HotelsService")
+                        .WithMany("HotelServiceRoomTypes")
+                        .HasForeignKey("HotelsServiceID");
+
+                    b.HasOne("SuggestorCodeFirstAPI.Models.RoomType", "RoomType")
+                        .WithMany("HotelServiceRoomTypes")
+                        .HasForeignKey("RoomTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SuggestorCodeFirstAPI.Models.Reservation", "Reservation")
-                        .WithMany()
-                        .HasForeignKey("ReservationID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("HotelsService");
 
-                    b.Navigation("EventPlannerService");
-
-                    b.Navigation("Reservation");
+                    b.Navigation("RoomType");
                 });
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.HotelsService", b =>
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.RoomType", "RoomType")
                         .WithMany()
-                        .HasForeignKey("RoomTypeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoomTypeID");
 
-                    b.HasOne("SuggestorCodeFirstAPI.Models.User", null)
+                    b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("HotelsServices")
                         .HasForeignKey("UserID");
 
                     b.Navigation("RoomType");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.HotelsServiceComment", b =>
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.HotelsService", "HotelsService")
-                        .WithMany()
-                        .HasForeignKey("HotelsServiceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("HotelsServiceComments")
+                        .HasForeignKey("HotelsServiceID");
 
-                    b.HasOne("SuggestorCodeFirstAPI.Models.User", null)
+                    b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("HotelsServiceComment")
                         .HasForeignKey("UserID");
 
                     b.Navigation("HotelsService");
-                });
 
-            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.HotelsServiceReservation", b =>
-                {
-                    b.HasOne("SuggestorCodeFirstAPI.Models.HotelsService", "HotelsService")
-                        .WithMany("HotelsServiceReservations")
-                        .HasForeignKey("HotelsServiceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SuggestorCodeFirstAPI.Models.Reservation", "Reservation")
-                        .WithMany()
-                        .HasForeignKey("ReservationID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("HotelsService");
-
-                    b.Navigation("Reservation");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.Payment", b =>
@@ -709,7 +670,7 @@ namespace SuggestorCodeFirstAPI.Migrations
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.Reservation", b =>
                 {
-                    b.HasOne("SuggestorCodeFirstAPI.Models.Payment", null)
+                    b.HasOne("SuggestorCodeFirstAPI.Models.Payment", "Payment")
                         .WithMany("Reservations")
                         .HasForeignKey("PaymentID");
 
@@ -717,106 +678,108 @@ namespace SuggestorCodeFirstAPI.Migrations
                         .WithMany("Reservations")
                         .HasForeignKey("UserID");
 
+                    b.Navigation("Payment");
+
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TourGuideService", b =>
                 {
-                    b.HasOne("SuggestorCodeFirstAPI.Models.User", null)
+                    b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("TourGuideServices")
                         .HasForeignKey("UserID");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TourGuideServiceComment", b =>
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.TourGuideService", "TourGuideService")
-                        .WithMany()
-                        .HasForeignKey("TourGuideServiceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("TourGuideServiceComments")
+                        .HasForeignKey("TourGuideServiceID");
 
-                    b.HasOne("SuggestorCodeFirstAPI.Models.User", null)
+                    b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("TourGuideServiceComments")
                         .HasForeignKey("UserID");
 
                     b.Navigation("TourGuideService");
-                });
 
-            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TourGuideServiceReservation", b =>
-                {
-                    b.HasOne("SuggestorCodeFirstAPI.Models.Reservation", "Reservation")
-                        .WithMany()
-                        .HasForeignKey("ReservationID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SuggestorCodeFirstAPI.Models.TourGuideService", "TourGuideService")
-                        .WithMany("TourGuideServiceReservations")
-                        .HasForeignKey("TourGuideServiceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Reservation");
-
-                    b.Navigation("TourGuideService");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TransportService", b =>
                 {
-                    b.HasOne("SuggestorCodeFirstAPI.Models.TransportType", "TransportType")
-                        .WithMany()
-                        .HasForeignKey("TransportTypeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SuggestorCodeFirstAPI.Models.User", null)
+                    b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("TransportServices")
                         .HasForeignKey("UserID");
 
-                    b.Navigation("TransportType");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TransportServiceComment", b =>
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.TransportService", "TransportService")
-                        .WithMany()
-                        .HasForeignKey("TransportServiceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("TransportServiceComments")
+                        .HasForeignKey("TransportServiceID");
 
-                    b.HasOne("SuggestorCodeFirstAPI.Models.User", null)
+                    b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("TransportServiceComments")
                         .HasForeignKey("UserID");
 
                     b.Navigation("TransportService");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.EventPlannerServiceReservation", b =>
+                {
+                    b.HasOne("SuggestorCodeFirstAPI.Models.EventPlannerService", "EventPlannerService")
+                        .WithMany("EventPlannerServiceReservations")
+                        .HasForeignKey("EventPlannerServiceID");
+
+                    b.Navigation("EventPlannerService");
+                });
+
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.HotelsServiceReservation", b =>
+                {
+                    b.HasOne("SuggestorCodeFirstAPI.Models.HotelsService", "HotelsService")
+                        .WithMany("HotelsServiceReservations")
+                        .HasForeignKey("HotelsServiceID");
+
+                    b.Navigation("HotelsService");
+                });
+
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TourGuideServiceReservation", b =>
+                {
+                    b.HasOne("SuggestorCodeFirstAPI.Models.TourGuideService", "TourGuideService")
+                        .WithMany("TourGuideServiceReservations")
+                        .HasForeignKey("TourGuideServiceID");
+
+                    b.Navigation("TourGuideService");
                 });
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TransportServiceReservation", b =>
                 {
-                    b.HasOne("SuggestorCodeFirstAPI.Models.Reservation", "Reservation")
-                        .WithMany()
-                        .HasForeignKey("ReservationID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("SuggestorCodeFirstAPI.Models.TransportService", "TransportService")
                         .WithMany("TransportServiceReservations")
-                        .HasForeignKey("TransportServiceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Reservation");
+                        .HasForeignKey("TransportServiceID");
 
                     b.Navigation("TransportService");
                 });
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.EventPlannerService", b =>
                 {
+                    b.Navigation("EventPlannerServiceComments");
+
                     b.Navigation("EventPlannerServiceReservations");
                 });
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.HotelsService", b =>
                 {
+                    b.Navigation("HotelServiceRoomTypes");
+
+                    b.Navigation("HotelsServiceComments");
+
                     b.Navigation("HotelsServiceReservations");
                 });
 
@@ -825,13 +788,27 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Navigation("Reservations");
                 });
 
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.Reservation", b =>
+                {
+                    b.Navigation("Cancellation");
+                });
+
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.RoomType", b =>
+                {
+                    b.Navigation("HotelServiceRoomTypes");
+                });
+
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TourGuideService", b =>
                 {
+                    b.Navigation("TourGuideServiceComments");
+
                     b.Navigation("TourGuideServiceReservations");
                 });
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TransportService", b =>
                 {
+                    b.Navigation("TransportServiceComments");
+
                     b.Navigation("TransportServiceReservations");
                 });
 

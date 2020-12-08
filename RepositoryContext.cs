@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,11 @@ namespace SuggestorCodeFirstAPI
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             modelBuilder.ApplyConfiguration(new CompanyConfiguration());
+            modelBuilder.Entity<HotelServiceRoomType>()
+                  .HasKey(cs => new { cs.HotelServiceId, cs.RoomTypeId});
+
         }
 
         public DbSet<Cancellation> Cancellations { get; set; }
@@ -36,7 +41,7 @@ namespace SuggestorCodeFirstAPI
         public DbSet<TransportService> TransportServices { get; set; }
         public DbSet<TransportServiceComment> TransportServiceComments { get; set; }
         public DbSet<TransportServiceReservation> TransportServiceReservations { get; set; }
-        public DbSet<TransportType> TransportTypes { get; set; }
+        public DbSet<HotelServiceRoomType> HotelServiceRoomTypes { get; set; }
         public DbSet<User> Users { get; set; }
 
         

@@ -11,8 +11,10 @@ namespace SuggestorCodeFirstAPI.Models
         public decimal Amount { get; set; }
         public decimal Discount { get; set; }
         public DateTime Date { get; set; }
-        public Guid CustomerId { get; set; }
+
+        public Guid? UserID { get; set; }
         public virtual User User { get; set; }
+
         public virtual List<Reservation> Reservations { get; set; }
     }
 }

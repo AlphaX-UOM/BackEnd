@@ -12,8 +12,14 @@ namespace SuggestorCodeFirstAPI.Models
         public string District { get; set; }
         public string Pnumber { get; set; }
         public string Description { get; set; }
-        public Guid TransportTypeID { get; set; }
-        public virtual TransportType TransportType { get; set; }
+        public string VehicleType { get; set; }
+        public int Count { get; set; }
+        public decimal PricePerDay { get; set; }
+
+        public Guid? UserID { get; set; }
+        public virtual User User { get; set; }
+
         public virtual List<TransportServiceReservation> TransportServiceReservations { get; set; }
+        public virtual List<TransportServiceComment> TransportServiceComments { get; set; }
     }
 }

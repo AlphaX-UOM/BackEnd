@@ -15,6 +15,11 @@ namespace SuggestorCodeFirstAPI.Models
         public DateTime Time { get; set; }
         public string EventType { get; set; }
         public string OtherDetails { get; set; }
+
+        public Guid? UserID { get; set; }
+        public virtual User User { get; set; }
+
         public virtual List<EventPlannerServiceReservation> EventPlannerServiceReservations { get; set; }
+        public virtual List<EventPlannerServiceComment> EventPlannerServiceComments { get; set; }
     }
 }

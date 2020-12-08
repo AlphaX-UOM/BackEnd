@@ -12,7 +12,13 @@ namespace SuggestorCodeFirstAPI.Models
         public DateTime CheckIn { get; set; }
         public DateTime CheckOut { get; set; }
         public decimal Price { get; set; }
-        public Guid CustomerId { get; set; }
+
+        public Guid? UserID { get; set; }
         public virtual User User { get; set; }
+
+        public Guid? PaymentID { get; set; }
+        public virtual Payment Payment { get; set; }
+
+        public virtual Cancellation Cancellation { get; set; }
     }
 }
