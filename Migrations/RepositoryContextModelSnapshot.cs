@@ -601,11 +601,13 @@ namespace SuggestorCodeFirstAPI.Migrations
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.EventPlannerService", "EventPlannerService")
                         .WithMany("EventPlannerServiceComments")
-                        .HasForeignKey("EventPlannerServiceID");
+                        .HasForeignKey("EventPlannerServiceID")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("EventPlannerServiceComment")
-                        .HasForeignKey("UserID");
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("EventPlannerService");
 
@@ -648,11 +650,13 @@ namespace SuggestorCodeFirstAPI.Migrations
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.HotelsService", "HotelsService")
                         .WithMany("HotelsServiceComments")
-                        .HasForeignKey("HotelsServiceID");
+                        .HasForeignKey("HotelsServiceID")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("HotelsServiceComment")
-                        .HasForeignKey("UserID");
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("HotelsService");
 
@@ -696,11 +700,13 @@ namespace SuggestorCodeFirstAPI.Migrations
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.TourGuideService", "TourGuideService")
                         .WithMany("TourGuideServiceComments")
-                        .HasForeignKey("TourGuideServiceID");
+                        .HasForeignKey("TourGuideServiceID")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("TourGuideServiceComments")
-                        .HasForeignKey("UserID");
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("TourGuideService");
 
@@ -720,11 +726,13 @@ namespace SuggestorCodeFirstAPI.Migrations
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.TransportService", "TransportService")
                         .WithMany("TransportServiceComments")
-                        .HasForeignKey("TransportServiceID");
+                        .HasForeignKey("TransportServiceID")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("TransportServiceComments")
-                        .HasForeignKey("UserID");
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("TransportService");
 

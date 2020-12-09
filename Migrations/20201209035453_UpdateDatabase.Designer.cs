@@ -10,8 +10,8 @@ using SuggestorCodeFirstAPI;
 namespace SuggestorCodeFirstAPI.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20201208212954_DatabaseCreation")]
-    partial class DatabaseCreation
+    [Migration("20201209035453_UpdateDatabase")]
+    partial class UpdateDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,16 +33,17 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("ReservationID")
+                    b.Property<Guid?>("ReservationID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid?>("UserID")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ID");
 
                     b.HasIndex("ReservationID")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[ReservationID] IS NOT NULL");
 
                     b.HasIndex("UserID");
 
@@ -73,7 +74,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<DateTime>("Time")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid?>("UserID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Venue")
@@ -98,13 +99,13 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("EventPlannerServiceID")
+                    b.Property<Guid?>("EventPlannerServiceID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid?>("UserID")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ID");
@@ -118,10 +119,10 @@ namespace SuggestorCodeFirstAPI.Migrations
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.HotelServiceRoomType", b =>
                 {
-                    b.Property<Guid>("HotelServiceId")
+                    b.Property<Guid?>("HotelServiceId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("RoomTypeId")
+                    b.Property<Guid?>("RoomTypeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("HotelsServiceID")
@@ -160,10 +161,10 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<decimal>("PricePerDay")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("RoomTypeID")
+                    b.Property<Guid?>("RoomTypeID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid?>("UserID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Venue")
@@ -190,13 +191,13 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("HotelsServiceID")
+                    b.Property<Guid?>("HotelsServiceID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid?>("UserID")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ID");
@@ -223,7 +224,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<decimal>("Discount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid?>("UserID")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ID");
@@ -252,13 +253,13 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<int>("NumOfTravellers")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("PaymentID")
+                    b.Property<Guid?>("PaymentID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid?>("UserID")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ID");
@@ -322,7 +323,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<string>("Pnumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid?>("UserID")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ID");
@@ -347,10 +348,10 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("TourGuideServiceID")
+                    b.Property<Guid?>("TourGuideServiceID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid?>("UserID")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ID");
@@ -386,7 +387,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<decimal>("PricePerDay")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid?>("UserID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("VehicleType")
@@ -414,10 +415,10 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("TransportServiceID")
+                    b.Property<Guid?>("TransportServiceID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid?>("UserID")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ID");
@@ -521,7 +522,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                 {
                     b.HasBaseType("SuggestorCodeFirstAPI.Models.Reservation");
 
-                    b.Property<Guid>("HotelsServiceID")
+                    b.Property<Guid?>("HotelsServiceID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("NoOfRooms")
@@ -539,7 +540,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                 {
                     b.HasBaseType("SuggestorCodeFirstAPI.Models.Reservation");
 
-                    b.Property<Guid>("TourGuideServiceID")
+                    b.Property<Guid?>("TourGuideServiceID")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasIndex("TourGuideServiceID");
@@ -563,7 +564,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<DateTime>("PickUpTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("TransportServiceID")
+                    b.Property<Guid?>("TransportServiceID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("VehicleType")
@@ -578,15 +579,11 @@ namespace SuggestorCodeFirstAPI.Migrations
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.Reservation", "Reservation")
                         .WithOne("Cancellation")
-                        .HasForeignKey("SuggestorCodeFirstAPI.Models.Cancellation", "ReservationID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SuggestorCodeFirstAPI.Models.Cancellation", "ReservationID");
 
                     b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("Cancellations")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserID");
 
                     b.Navigation("Reservation");
 
@@ -597,9 +594,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("EventPlannerServices")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserID");
 
                     b.Navigation("User");
                 });
@@ -609,14 +604,12 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.HasOne("SuggestorCodeFirstAPI.Models.EventPlannerService", "EventPlannerService")
                         .WithMany("EventPlannerServiceComments")
                         .HasForeignKey("EventPlannerServiceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("EventPlannerServiceComment")
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("EventPlannerService");
 
@@ -644,15 +637,11 @@ namespace SuggestorCodeFirstAPI.Migrations
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.RoomType", "RoomType")
                         .WithMany()
-                        .HasForeignKey("RoomTypeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoomTypeID");
 
                     b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("HotelsServices")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserID");
 
                     b.Navigation("RoomType");
 
@@ -664,14 +653,12 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.HasOne("SuggestorCodeFirstAPI.Models.HotelsService", "HotelsService")
                         .WithMany("HotelsServiceComments")
                         .HasForeignKey("HotelsServiceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("HotelsServiceComment")
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("HotelsService");
 
@@ -682,9 +669,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserID");
 
                     b.Navigation("User");
                 });
@@ -693,15 +678,11 @@ namespace SuggestorCodeFirstAPI.Migrations
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.Payment", "Payment")
                         .WithMany("Reservations")
-                        .HasForeignKey("PaymentID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PaymentID");
 
                     b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("Reservations")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserID");
 
                     b.Navigation("Payment");
 
@@ -712,9 +693,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("TourGuideServices")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserID");
 
                     b.Navigation("User");
                 });
@@ -724,14 +703,12 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.HasOne("SuggestorCodeFirstAPI.Models.TourGuideService", "TourGuideService")
                         .WithMany("TourGuideServiceComments")
                         .HasForeignKey("TourGuideServiceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("TourGuideServiceComments")
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("TourGuideService");
 
@@ -742,9 +719,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("TransportServices")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserID");
 
                     b.Navigation("User");
                 });
@@ -754,14 +729,12 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.HasOne("SuggestorCodeFirstAPI.Models.TransportService", "TransportService")
                         .WithMany("TransportServiceComments")
                         .HasForeignKey("TransportServiceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("TransportServiceComments")
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("TransportService");
 
@@ -781,9 +754,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.HotelsService", "HotelsService")
                         .WithMany("HotelsServiceReservations")
-                        .HasForeignKey("HotelsServiceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HotelsServiceID");
 
                     b.Navigation("HotelsService");
                 });
@@ -792,9 +763,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.TourGuideService", "TourGuideService")
                         .WithMany("TourGuideServiceReservations")
-                        .HasForeignKey("TourGuideServiceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TourGuideServiceID");
 
                     b.Navigation("TourGuideService");
                 });
@@ -803,9 +772,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.TransportService", "TransportService")
                         .WithMany("TransportServiceReservations")
-                        .HasForeignKey("TransportServiceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TransportServiceID");
 
                     b.Navigation("TransportService");
                 });

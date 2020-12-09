@@ -18,10 +18,50 @@ namespace SuggestorCodeFirstAPI
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            
             modelBuilder.ApplyConfiguration(new CompanyConfiguration());
             modelBuilder.Entity<HotelServiceRoomType>()
                   .HasKey(cs => new { cs.HotelServiceId, cs.RoomTypeId});
+
+            modelBuilder.Entity<TransportServiceComment>()
+                .HasOne(t => t.TransportService)
+                .WithMany(b => b.TransportServiceComments)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<TransportServiceComment>()
+                .HasOne(t => t.User)
+                .WithMany(b => b.TransportServiceComments)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<TourGuideServiceComment>()
+                .HasOne(t => t.TourGuideService)
+                .WithMany(b => b.TourGuideServiceComments)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<TourGuideServiceComment>()
+                .HasOne(t => t.User)
+                .WithMany(b => b.TourGuideServiceComments)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<EventPlannerServiceComment>()
+                .HasOne(t => t.EventPlannerService)
+                .WithMany(b => b.EventPlannerServiceComments)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<EventPlannerServiceComment>()
+                .HasOne(t => t.User)
+                .WithMany(b => b.EventPlannerServiceComment)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<HotelsServiceComment>()
+                .HasOne(t => t.HotelsService)
+                .WithMany(b => b.HotelsServiceComments)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<HotelsServiceComment>()
+                .HasOne(t => t.User)
+                .WithMany(b => b.HotelsServiceComment)
+                .OnDelete(DeleteBehavior.NoAction);
 
         }
 

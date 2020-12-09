@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SuggestorCodeFirstAPI.Migrations
 {
-    public partial class DatabaseCreation : Migration
+    public partial class UpdateDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,7 +54,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                     Time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EventType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OtherDetails = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -64,7 +64,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                         column: x => x.UserID,
                         principalTable: "Users",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -79,8 +79,8 @@ namespace SuggestorCodeFirstAPI.Migrations
                     Pnumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Features = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OtherDetails = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RoomTypeID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    RoomTypeID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -90,13 +90,13 @@ namespace SuggestorCodeFirstAPI.Migrations
                         column: x => x.RoomTypeID,
                         principalTable: "RoomTypes",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_HotelsServices_Users_UserID",
                         column: x => x.UserID,
                         principalTable: "Users",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -107,7 +107,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Discount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -117,7 +117,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                         column: x => x.UserID,
                         principalTable: "Users",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -131,7 +131,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                     CostPerDay = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Pnumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OtherDetails = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -141,7 +141,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                         column: x => x.UserID,
                         principalTable: "Users",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -156,7 +156,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                     VehicleType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Count = table.Column<int>(type: "int", nullable: false),
                     PricePerDay = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -166,7 +166,7 @@ namespace SuggestorCodeFirstAPI.Migrations
                         column: x => x.UserID,
                         principalTable: "Users",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -177,8 +177,8 @@ namespace SuggestorCodeFirstAPI.Migrations
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EventPlannerServiceID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    EventPlannerServiceID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -187,14 +187,12 @@ namespace SuggestorCodeFirstAPI.Migrations
                         name: "FK_EventPlannerServiceComments_EventPlannerServices_EventPlannerServiceID",
                         column: x => x.EventPlannerServiceID,
                         principalTable: "EventPlannerServices",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_EventPlannerServiceComments_Users_UserID",
                         column: x => x.UserID,
                         principalTable: "Users",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -230,8 +228,8 @@ namespace SuggestorCodeFirstAPI.Migrations
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    HotelsServiceID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    HotelsServiceID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -240,14 +238,12 @@ namespace SuggestorCodeFirstAPI.Migrations
                         name: "FK_HotelsServiceComments_HotelsServices_HotelsServiceID",
                         column: x => x.HotelsServiceID,
                         principalTable: "HotelsServices",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_HotelsServiceComments_Users_UserID",
                         column: x => x.UserID,
                         principalTable: "Users",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -258,8 +254,8 @@ namespace SuggestorCodeFirstAPI.Migrations
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TourGuideServiceID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    TourGuideServiceID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -268,14 +264,12 @@ namespace SuggestorCodeFirstAPI.Migrations
                         name: "FK_TourGuideServiceComments_TourGuideServices_TourGuideServiceID",
                         column: x => x.TourGuideServiceID,
                         principalTable: "TourGuideServices",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_TourGuideServiceComments_Users_UserID",
                         column: x => x.UserID,
                         principalTable: "Users",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -287,8 +281,8 @@ namespace SuggestorCodeFirstAPI.Migrations
                     CheckIn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CheckOut = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PaymentID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    PaymentID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EventType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EventPlannerServiceID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -317,31 +311,31 @@ namespace SuggestorCodeFirstAPI.Migrations
                         column: x => x.HotelsServiceID,
                         principalTable: "HotelsServices",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reservations_Payments_PaymentID",
                         column: x => x.PaymentID,
                         principalTable: "Payments",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reservations_TourGuideServices_TourGuideServiceID",
                         column: x => x.TourGuideServiceID,
                         principalTable: "TourGuideServices",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reservations_TransportServices_TransportServiceID",
                         column: x => x.TransportServiceID,
                         principalTable: "TransportServices",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reservations_Users_UserID",
                         column: x => x.UserID,
                         principalTable: "Users",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -352,8 +346,8 @@ namespace SuggestorCodeFirstAPI.Migrations
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TransportServiceID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    TransportServiceID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -362,14 +356,12 @@ namespace SuggestorCodeFirstAPI.Migrations
                         name: "FK_TransportServiceComments_TransportServices_TransportServiceID",
                         column: x => x.TransportServiceID,
                         principalTable: "TransportServices",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_TransportServiceComments_Users_UserID",
                         column: x => x.UserID,
                         principalTable: "Users",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -379,8 +371,8 @@ namespace SuggestorCodeFirstAPI.Migrations
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsApproved = table.Column<bool>(type: "bit", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReservationID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ReservationID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -390,13 +382,13 @@ namespace SuggestorCodeFirstAPI.Migrations
                         column: x => x.ReservationID,
                         principalTable: "Reservations",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Cancellations_Users_UserID",
                         column: x => x.UserID,
                         principalTable: "Users",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
@@ -418,7 +410,8 @@ namespace SuggestorCodeFirstAPI.Migrations
                 name: "IX_Cancellations_ReservationID",
                 table: "Cancellations",
                 column: "ReservationID",
-                unique: true);
+                unique: true,
+                filter: "[ReservationID] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cancellations_UserID",
