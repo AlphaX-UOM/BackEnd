@@ -13,5 +13,6 @@ namespace SuggestorCodeFirstAPI.Models
         public string Specs { get; set; }
         public decimal BasePricePerDay { get; set; }
         public int Count { get; set; }
+        public virtual List<HotelServiceRoomType> HotelServiceRoomTypes { get; set; }
     }
 }

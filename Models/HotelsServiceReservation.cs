@@ -5,13 +5,12 @@ using System.Threading.Tasks;
 
 namespace SuggestorCodeFirstAPI.Models
 {
-    public class HotelsServiceReservation
+    public class HotelsServiceReservation : Reservation
     {
-        public Guid ID { get; set; }
-        public Guid ReservationID { get; set; }
-        public virtual Reservation Reservation { get; set; }
-        public Guid HotelsServiceID { get; set; }
-        public virtual HotelsService HotelsService { get; set; }
         public string RoomType { get; set; }
+        public int NoOfRooms { get; set; }
+
+        public Guid? HotelsServiceID { get; set; }
+        public virtual HotelsService HotelsService { get; set; }
     }
 }

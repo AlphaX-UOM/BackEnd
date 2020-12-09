@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,51 @@ namespace SuggestorCodeFirstAPI
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
             modelBuilder.ApplyConfiguration(new CompanyConfiguration());
+            modelBuilder.Entity<HotelServiceRoomType>()
+                  .HasKey(cs => new { cs.HotelServiceId, cs.RoomTypeId});
+
+            modelBuilder.Entity<TransportServiceComment>()
+                .HasOne(t => t.TransportService)
+                .WithMany(b => b.TransportServiceComments)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<TransportServiceComment>()
+                .HasOne(t => t.User)
+                .WithMany(b => b.TransportServiceComments)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<TourGuideServiceComment>()
+                .HasOne(t => t.TourGuideService)
+                .WithMany(b => b.TourGuideServiceComments)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<TourGuideServiceComment>()
+                .HasOne(t => t.User)
+                .WithMany(b => b.TourGuideServiceComments)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<EventPlannerServiceComment>()
+                .HasOne(t => t.EventPlannerService)
+                .WithMany(b => b.EventPlannerServiceComments)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<EventPlannerServiceComment>()
+                .HasOne(t => t.User)
+                .WithMany(b => b.EventPlannerServiceComment)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<HotelsServiceComment>()
+                .HasOne(t => t.HotelsService)
+                .WithMany(b => b.HotelsServiceComments)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<HotelsServiceComment>()
+                .HasOne(t => t.User)
+                .WithMany(b => b.HotelsServiceComment)
+                .OnDelete(DeleteBehavior.NoAction);
+
         }
 
         public DbSet<Cancellation> Cancellations { get; set; }
@@ -36,7 +81,7 @@ namespace SuggestorCodeFirstAPI
         public DbSet<TransportService> TransportServices { get; set; }
         public DbSet<TransportServiceComment> TransportServiceComments { get; set; }
         public DbSet<TransportServiceReservation> TransportServiceReservations { get; set; }
-        public DbSet<TransportType> TransportTypes { get; set; }
+        public DbSet<HotelServiceRoomType> HotelServiceRoomTypes { get; set; }
         public DbSet<User> Users { get; set; }
 
         
