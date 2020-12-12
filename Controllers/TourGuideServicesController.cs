@@ -23,9 +23,15 @@ namespace SuggestorCodeFirstAPI.Controllers
 
         // GET: api/TourGuideServices
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TourGuideService>>> GetTourGuideServices()
+        public async Task<ActionResult<IEnumerable<TourGuideService>>> GetTourGuideServices(int? guideValue)
         {
-            return await _context.TourGuideServices.ToListAsync();
+            var guide = _context.TourGuideServices.AsQueryable();
+            if(guideValue != null)
+            {
+                guide = _context.TourGuideServices.Where(i => i.CostPerDay < guideValue);
+            }
+
+            return await guide.ToListAsync();
         }
 
         // GET: api/TourGuideServices/5

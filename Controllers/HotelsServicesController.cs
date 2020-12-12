@@ -23,9 +23,14 @@ namespace SuggestorCodeFirstAPI.Controllers
 
         // GET: api/HotelsServices
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<HotelsService>>> GetHotelsServices()
+        public async Task<ActionResult<IEnumerable<HotelsService>>> GetHotelsServices(int? hotelValue)
         {
-            return await _context.HotelsServices.ToListAsync();
+            var hotel = _context.HotelsServices.AsQueryable();
+            if(hotelValue != null)
+            {
+                hotel = _context.HotelsServices.Where(i => i.PricePerDay < hotelValue);
+            }
+            return await hotel.ToListAsync();
         }
 
         // GET: api/HotelsServices/5

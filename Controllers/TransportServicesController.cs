@@ -23,9 +23,16 @@ namespace SuggestorCodeFirstAPI.Controllers
 
         // GET: api/TransportServices
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TransportService>>> GetTransportServices()
+        public async Task<ActionResult<IEnumerable<TransportService>>> GetTransportServices(int? transvalue)
         {
-            return await _context.TransportServices.ToListAsync();
+            var transportService = _context.TransportServices.AsQueryable();
+
+            if(transvalue != null)
+            {
+                transportService = _context.TransportServices.Where(i => i.PricePerDay < transvalue);
+            }
+
+            return await transportService.ToListAsync();
         }
 
         // GET: api/TransportServices/5
