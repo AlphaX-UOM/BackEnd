@@ -26,6 +26,29 @@ namespace SuggestorCodeFirstAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+
+                        builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                    });
+
+                options.AddPolicy("MyCORSPolicy",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:3000",
+                                            "http://localhost:19006")
+                                            .AllowAnyHeader()
+                                            .AllowAnyMethod();
+                    });
+
+            });
+
             services.AddControllers();
 
             services.AddControllersWithViews()
@@ -34,7 +57,7 @@ namespace SuggestorCodeFirstAPI
 );
 
             services.AddDbContext<RepositoryContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("SuggestorCodeFirstDatabase")));
+                options.UseSqlServer(Configuration.GetConnectionString("SuggestorDatabaseAzure")));
             
         }
 
@@ -45,6 +68,8 @@ namespace SuggestorCodeFirstAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("MyCORSPolicy");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

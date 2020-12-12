@@ -23,9 +23,14 @@ namespace SuggestorCodeFirstAPI.Controllers
 
         // GET: api/EventPlannerServices
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EventPlannerService>>> GetEventPlannerServices()
+        public async Task<ActionResult<IEnumerable<EventPlannerService>>> GetEventPlannerServices(int? eventValue)
         {
-            return await _context.EventPlannerServices.ToListAsync();
+            var events = _context.EventPlannerServices.AsQueryable();
+            if(eventValue != null)
+            {
+                events = _context.EventPlannerServices.Where(i => i.Price < eventValue);
+            }
+            return await events.ToListAsync();
         }
 
         // GET: api/EventPlannerServices/5
