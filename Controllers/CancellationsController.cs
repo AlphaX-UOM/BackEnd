@@ -28,6 +28,8 @@ namespace SuggestorCodeFirstAPI.Controllers
             return await _context.Cancellations.ToListAsync();
         }
 
+    
+
         // GET: api/Cancellations/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Cancellation>> GetCancellation(Guid id)

@@ -22,10 +22,21 @@ namespace SuggestorCodeFirstAPI.Controllers
         }
 
         // GET: api/TransportServiceReservations
+        
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TransportServiceReservation>>> GetTransportServiceReservations()
+        public async Task<ActionResult<IEnumerable<TransportServiceReservation>>> GetTransportServiceReservations(Guid? userId)
         {
-            return await _context.TransportServiceReservations.ToListAsync();
+            var events = _context.TransportServiceReservations.AsQueryable();
+            if (userId != null)
+            {
+                events = _context.TransportServiceReservations.Where(i => i.UserID == userId).Include(pub => pub.TransportService).Include(x => x.Cancellation);
+            }
+            else
+            {
+                events = _context.TransportServiceReservations.Include(pub => pub.TransportService).Include(x => x.Cancellation);
+            }
+            return await events.ToListAsync();
         }
 
         // GET: api/TransportServiceReservations/5

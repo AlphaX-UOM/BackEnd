@@ -22,10 +22,21 @@ namespace SuggestorCodeFirstAPI.Controllers
         }
 
         // GET: api/TourGuideServiceReservations
+        
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TourGuideServiceReservation>>> GetTourGuideServiceReservations()
+        public async Task<ActionResult<IEnumerable<TourGuideServiceReservation>>> GetTourGuideServiceReservations(Guid? userId)
         {
-            return await _context.TourGuideServiceReservations.ToListAsync();
+            var events = _context.TourGuideServiceReservations.AsQueryable();
+            if (userId != null)
+            {
+                events = _context.TourGuideServiceReservations.Where(i => i.UserID == userId).Include(pub => pub.TourGuideService).Include(x => x.Cancellation);
+            }
+            else
+            {
+                events = _context.TourGuideServiceReservations.Include(pub => pub.TourGuideService).Include(x => x.Cancellation);
+            }
+            return await events.ToListAsync();
         }
 
         // GET: api/TourGuideServiceReservations/5

@@ -22,11 +22,23 @@ namespace SuggestorCodeFirstAPI.Controllers
         }
 
         // GET: api/EventPlannerServiceReservations
+        
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EventPlannerServiceReservation>>> GetEventPlannerServiceReservations()
+        public async Task<ActionResult<IEnumerable<EventPlannerServiceReservation>>> GetEventPlannerServiceReservations(Guid? userId)
         {
-            return await _context.EventPlannerServiceReservations.ToListAsync();
+            var events = _context.EventPlannerServiceReservations.AsQueryable();
+            if (userId != null)
+            {
+                events = _context.EventPlannerServiceReservations.Where(i => i.UserID == userId).Include(pub => pub.EventPlannerService).Include(x => x.Cancellation);
+            }
+            else
+            {
+                events = _context.EventPlannerServiceReservations.Include(pub => pub.EventPlannerService).Include(x => x.Cancellation);
+            }
+            return await events.ToListAsync();
         }
+
 
         // GET: api/EventPlannerServiceReservations/5
         [HttpGet("{id}")]
