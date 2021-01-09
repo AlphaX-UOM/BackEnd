@@ -39,7 +39,7 @@ namespace SuggestorCodeFirstAPI.Controllers
         }
 
         // GET: api/Users/5
-        [Authorize]
+       // [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(Guid id)
         {
@@ -59,11 +59,21 @@ namespace SuggestorCodeFirstAPI.Controllers
         }
 
 
+
+
         [HttpGet("Login")]
         public async Task<ActionResult<UserWithToken>> Login([FromBody] User user)
         {
              user = await _context.Users
+                                    .Include(u => u.Reservations)
+                                .Where(u => u.Email == user.Email
+                                   && u.Password == user.Password)
                                 .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return NotFound();
+            }
 
             UserWithToken userWithToken = new UserWithToken(user);
 

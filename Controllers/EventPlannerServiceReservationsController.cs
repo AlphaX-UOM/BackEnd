@@ -39,6 +39,19 @@ namespace SuggestorCodeFirstAPI.Controllers
             return await events.ToListAsync();
         }
 
+        [HttpGet("Customers")]
+        public async Task<ActionResult<IEnumerable<EventPlannerServiceReservation>>> GetEventPlannerServices(Guid? serveId)
+        {
+            var events = _context.EventPlannerServiceReservations.AsQueryable();
+
+            if (serveId != null)
+            {
+                events = _context.EventPlannerServiceReservations.Where(i => i.EventPlannerService.UserID == serveId).Include(pub => pub.User);
+            }
+
+            return await events.ToListAsync();
+        }
+
 
         // GET: api/EventPlannerServiceReservations/5
         [HttpGet("{id}")]
