@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "ghe1lEwE7dK/BHWhAk6kSWNjYnTJXug31IjxbUSlzS94ds5WknYbflnSgQjJ9JChWT+blZJPWj4sFaEwvERXWg==",
+  "dgSpecHash": "RuT0pMJTNSrTQYuA/dBy5s7ZQjotFaUzhY05sb1TlveRJhCPQi2a/aHggKPDBUfZpztH58n8QoP0EHIsqu2pdg==",
   "success": true,
-  "projectFilePath": "D:\\Software Project\\CodeFirst-Backend\\SuggestorCodeFirstAPI\\SuggestorCodeFirstAPI.csproj",
+  "projectFilePath": "D:\\Software Project\\CodeFirst-Backend\\BackendJWTokened\\SuggestorCodeFirstAPI\\SuggestorCodeFirstAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Sudam Yasodya\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
     "C:\\Users\\Sudam Yasodya\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
+    "C:\\Users\\Sudam Yasodya\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\3.1.10\\microsoft.aspnetcore.authentication.jwtbearer.3.1.10.nupkg.sha512",
     "C:\\Users\\Sudam Yasodya\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\Sudam Yasodya\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\3.1.0\\microsoft.aspnetcore.jsonpatch.3.1.0.nupkg.sha512",
     "C:\\Users\\Sudam Yasodya\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\3.1.0\\microsoft.aspnetcore.mvc.newtonsoftjson.3.1.0.nupkg.sha512",

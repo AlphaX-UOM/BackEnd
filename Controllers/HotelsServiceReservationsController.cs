@@ -22,10 +22,34 @@ namespace SuggestorCodeFirstAPI.Controllers
         }
 
         // GET: api/HotelsServiceReservations
+        
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<HotelsServiceReservation>>> GetHotelsServiceReservations()
+        public async Task<ActionResult<IEnumerable<HotelsServiceReservation>>> GetHotelsServiceReservations(Guid? userId)
         {
-            return await _context.HotelsServiceReservations.ToListAsync();
+            var events = _context.HotelsServiceReservations.AsQueryable();
+            if (userId != null)
+            {
+                events = _context.HotelsServiceReservations.Where(i => i.UserID == userId).Include(pub => pub.HotelsService).Include(x => x.Cancellation);
+            }
+            else
+            {
+                events = _context.HotelsServiceReservations.Include(pub => pub.HotelsService).Include(x => x.Cancellation);
+            }
+            return await events.ToListAsync();
+        }
+
+        [HttpGet("Customers")]
+        public async Task<ActionResult<IEnumerable<HotelsServiceReservation>>> GetHotelsServices(Guid? serveId)
+        {
+            var events = _context.HotelsServiceReservations.AsQueryable();
+
+            if (serveId != null)
+            {
+                events = _context.HotelsServiceReservations.Where(i => i.HotelsService.UserID == serveId).Include(pub => pub.User);
+            }
+
+            return await events.ToListAsync();
         }
 
         // GET: api/HotelsServiceReservations/5

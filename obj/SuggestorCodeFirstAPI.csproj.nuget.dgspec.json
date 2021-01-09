@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Software Project\\CodeFirst-Backend\\SuggestorCodeFirstAPI\\SuggestorCodeFirstAPI.csproj": {}
+    "D:\\Software Project\\CodeFirst-Backend\\BackendJWTokened\\SuggestorCodeFirstAPI\\SuggestorCodeFirstAPI.csproj": {}
   },
   "projects": {
-    "D:\\Software Project\\CodeFirst-Backend\\SuggestorCodeFirstAPI\\SuggestorCodeFirstAPI.csproj": {
+    "D:\\Software Project\\CodeFirst-Backend\\BackendJWTokened\\SuggestorCodeFirstAPI\\SuggestorCodeFirstAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Software Project\\CodeFirst-Backend\\SuggestorCodeFirstAPI\\SuggestorCodeFirstAPI.csproj",
+        "projectUniqueName": "D:\\Software Project\\CodeFirst-Backend\\BackendJWTokened\\SuggestorCodeFirstAPI\\SuggestorCodeFirstAPI.csproj",
         "projectName": "SuggestorCodeFirstAPI",
-        "projectPath": "D:\\Software Project\\CodeFirst-Backend\\SuggestorCodeFirstAPI\\SuggestorCodeFirstAPI.csproj",
+        "projectPath": "D:\\Software Project\\CodeFirst-Backend\\BackendJWTokened\\SuggestorCodeFirstAPI\\SuggestorCodeFirstAPI.csproj",
         "packagesPath": "C:\\Users\\Sudam Yasodya\\.nuget\\packages\\",
-        "outputPath": "D:\\Software Project\\CodeFirst-Backend\\SuggestorCodeFirstAPI\\obj\\",
+        "outputPath": "D:\\Software Project\\CodeFirst-Backend\\BackendJWTokened\\SuggestorCodeFirstAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
@@ -45,6 +45,10 @@
             "EntityFramework": {
               "target": "Package",
               "version": "[6.4.4, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[3.1.10, )"
             },
             "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
               "target": "Package",
