@@ -61,7 +61,7 @@ namespace SuggestorCodeFirstAPI.Controllers
 
 
 
-        [HttpGet("Login")]
+        [HttpPost("Login")]
         public async Task<ActionResult<UserWithToken>> Login([FromBody] User user)
         {
              user = await _context.Users
