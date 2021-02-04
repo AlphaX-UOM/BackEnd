@@ -34,6 +34,25 @@ namespace SuggestorCodeFirstAPI.Controllers
             return await guide.ToListAsync();
         }
 
+        [HttpGet("Res")]
+        public async Task<ActionResult<IEnumerable<TourGuideService>>> GetNonTourGuideServices(DateTime? arrival, DateTime? departure)
+        {
+
+
+            if ((arrival != null) && (departure != null))
+            {
+                var guide = _context.TourGuideServices.FromSqlInterpolated($"SELECT * from TourGuideServices WHERE ID NOT IN ( SELECT TourGuideServiceID as ID FROM   TourGuideServices T JOIN Reservations R ON T.ID = R.TourGuideServiceID WHERE(checkIn <= {arrival} AND checkOut >= {arrival}) OR (checkIn < {departure} AND checkOut >= {departure}) OR ({arrival} <= checkIn AND {departure} >= checkIn))").ToList();
+
+                return guide;
+            }
+            else
+            {
+                return NotFound();
+            }
+
+
+        }
+
         // GET: api/TourGuideServices/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TourGuideService>> GetTourGuideService(Guid id)

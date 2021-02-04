@@ -33,6 +33,25 @@ namespace SuggestorCodeFirstAPI.Controllers
             return await events.ToListAsync();
         }
 
+        [HttpGet("Res")]
+        public async Task<ActionResult<IEnumerable<EventPlannerService>>> GetNonEventPlannerServices(DateTime? arrival, DateTime? departure)
+        {
+
+
+            if ((arrival != null) && (departure != null))
+            {
+                var events = _context.EventPlannerServices.FromSqlInterpolated($"SELECT * from EventPlannerServices WHERE ID NOT IN ( SELECT EventPlannerServiceID as ID FROM   EventPlannerServices T JOIN Reservations R ON T.ID = R.EventPlannerServiceID WHERE(checkIn <= {arrival} AND checkOut >= {arrival}) OR (checkIn < {departure} AND checkOut >= {departure}) OR ({arrival} <= checkIn AND {departure} >= checkIn))").ToList();
+
+                return events;
+            }
+            else
+            {
+                return NotFound();
+            }
+
+
+        }
+
         // GET: api/EventPlannerServices/5
         [HttpGet("{id}")]
         public async Task<ActionResult<EventPlannerService>> GetEventPlannerService(Guid id)

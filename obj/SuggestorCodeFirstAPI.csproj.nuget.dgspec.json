@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Software Project\\CodeFirst-Backend\\BackendJWTokened\\SuggestorCodeFirstAPI\\SuggestorCodeFirstAPI.csproj": {}
+    "D:\\Software Project\\Integrated Frontend\\Rasi+\\Admin Updated\\test\\Backend\\BackEnd-master\\SuggestorCodeFirstAPI.csproj": {}
   },
   "projects": {
-    "D:\\Software Project\\CodeFirst-Backend\\BackendJWTokened\\SuggestorCodeFirstAPI\\SuggestorCodeFirstAPI.csproj": {
+    "D:\\Software Project\\Integrated Frontend\\Rasi+\\Admin Updated\\test\\Backend\\BackEnd-master\\SuggestorCodeFirstAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Software Project\\CodeFirst-Backend\\BackendJWTokened\\SuggestorCodeFirstAPI\\SuggestorCodeFirstAPI.csproj",
+        "projectUniqueName": "D:\\Software Project\\Integrated Frontend\\Rasi+\\Admin Updated\\test\\Backend\\BackEnd-master\\SuggestorCodeFirstAPI.csproj",
         "projectName": "SuggestorCodeFirstAPI",
-        "projectPath": "D:\\Software Project\\CodeFirst-Backend\\BackendJWTokened\\SuggestorCodeFirstAPI\\SuggestorCodeFirstAPI.csproj",
+        "projectPath": "D:\\Software Project\\Integrated Frontend\\Rasi+\\Admin Updated\\test\\Backend\\BackEnd-master\\SuggestorCodeFirstAPI.csproj",
         "packagesPath": "C:\\Users\\Sudam Yasodya\\.nuget\\packages\\",
-        "outputPath": "D:\\Software Project\\CodeFirst-Backend\\BackendJWTokened\\SuggestorCodeFirstAPI\\obj\\",
+        "outputPath": "D:\\Software Project\\Integrated Frontend\\Rasi+\\Admin Updated\\test\\Backend\\BackEnd-master\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
