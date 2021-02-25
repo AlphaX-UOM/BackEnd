@@ -33,6 +33,25 @@ namespace SuggestorCodeFirstAPI.Controllers
             return await hotel.ToListAsync();
         }
 
+        [HttpGet("Res")]
+        public async Task<ActionResult<IEnumerable<HotelsService>>> GetNonHotelsServices(DateTime? arrival, DateTime? departure)
+        {
+
+
+            if ((arrival != null) && (departure != null))
+            {
+                var hotel = _context.HotelsServices.FromSqlInterpolated($"SELECT * from HotelsServices WHERE ID NOT IN ( SELECT HotelsServiceID as ID FROM   HotelsServices T JOIN Reservations R ON T.ID = R.HotelsServiceID WHERE(checkIn <= {arrival} AND checkOut >= {arrival}) OR (checkIn < {departure} AND checkOut >= {departure}) OR ({arrival} <= checkIn AND {departure} >= checkIn))").ToList();
+
+                return hotel;
+            }
+            else
+            {
+                return NotFound();
+            }
+
+
+        }
+
         // GET: api/HotelsServices/5
         [HttpGet("{id}")]
         public async Task<ActionResult<HotelsService>> GetHotelsService(Guid id)

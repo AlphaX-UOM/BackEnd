@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Software Project\\CodeFirst-Backend\\BackendJWTokened\\SuggestorCodeFirstAPI\\SuggestorCodeFirstAPI.csproj": {}
+    "D:\\Software Project\\CodeFirst-Backend\\2021 02 25 latest\\BackEnd-master\\SuggestorCodeFirstAPI.csproj": {}
   },
   "projects": {
-    "D:\\Software Project\\CodeFirst-Backend\\BackendJWTokened\\SuggestorCodeFirstAPI\\SuggestorCodeFirstAPI.csproj": {
+    "D:\\Software Project\\CodeFirst-Backend\\2021 02 25 latest\\BackEnd-master\\SuggestorCodeFirstAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Software Project\\CodeFirst-Backend\\BackendJWTokened\\SuggestorCodeFirstAPI\\SuggestorCodeFirstAPI.csproj",
+        "projectUniqueName": "D:\\Software Project\\CodeFirst-Backend\\2021 02 25 latest\\BackEnd-master\\SuggestorCodeFirstAPI.csproj",
         "projectName": "SuggestorCodeFirstAPI",
-        "projectPath": "D:\\Software Project\\CodeFirst-Backend\\BackendJWTokened\\SuggestorCodeFirstAPI\\SuggestorCodeFirstAPI.csproj",
+        "projectPath": "D:\\Software Project\\CodeFirst-Backend\\2021 02 25 latest\\BackEnd-master\\SuggestorCodeFirstAPI.csproj",
         "packagesPath": "C:\\Users\\Sudam Yasodya\\.nuget\\packages\\",
-        "outputPath": "D:\\Software Project\\CodeFirst-Backend\\BackendJWTokened\\SuggestorCodeFirstAPI\\obj\\",
+        "outputPath": "D:\\Software Project\\CodeFirst-Backend\\2021 02 25 latest\\BackEnd-master\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
@@ -30,6 +30,7 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -41,6 +42,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "EntityFramework": {
               "target": "Package",
@@ -95,7 +97,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.403\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
         }
       }
     }

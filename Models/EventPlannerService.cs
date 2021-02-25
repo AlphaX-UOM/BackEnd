@@ -15,6 +15,7 @@ namespace SuggestorCodeFirstAPI.Models
         public DateTime Time { get; set; }
         public string EventType { get; set; }
         public string OtherDetails { get; set; }
+        public string ImgURL { get; set; }
 
         public Guid? UserID { get; set; }
         public virtual User User { get; set; }
