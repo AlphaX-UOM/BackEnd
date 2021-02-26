@@ -53,12 +53,12 @@ namespace SuggestorCodeFirstAPI.Controllers
 
         }
 
-        [HttpGet("suggestor")]
+        [HttpGet("Sug")]
         public async Task<ActionResult<IEnumerable<TourGuideService>>> GetSuggestorTourGuideServices(DateTime? arrival, DateTime? departure, int? guideValue)
         {
 
 
-            if ((arrival != null) && (departure != null))
+            if ((arrival != null) && (departure != null) && (guideValue != null))
             {
                 var guide = _context.TourGuideServices.FromSqlInterpolated($"SELECT * from TourGuideServices WHERE CostPerDay<={guideValue} AND ID NOT IN ( SELECT TourGuideServiceID as ID FROM   TourGuideServices T JOIN Reservations R ON T.ID = R.TourGuideServiceID WHERE(checkIn <= {arrival} AND checkOut >= {arrival}) OR (checkIn < {departure} AND checkOut >= {departure}) OR ({arrival} <= checkIn AND {departure} >= checkIn))").ToList();
 

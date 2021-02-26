@@ -54,12 +54,12 @@ namespace SuggestorCodeFirstAPI.Controllers
             
         }
 
-        [HttpGet("suggestor")]
+        [HttpGet("Sug")]
         public async Task<ActionResult<IEnumerable<TransportService>>> GetSuggestorTransportServices(DateTime? arrival, DateTime? departure, int? transvalue)
         {
 
 
-            if ((arrival != null) && (departure != null))
+            if ((arrival != null) && (departure != null) && (transvalue != null))
             {
                 var transportService = _context.TransportServices.FromSqlInterpolated($"SELECT * from TransportServices WHERE PricePerDay<={transvalue} AND ID NOT IN ( SELECT TransportServiceID as ID FROM   TransportServices T JOIN Reservations R ON T.ID = R.transportServiceID WHERE(checkIn <= {arrival} AND checkOut >= {arrival}) OR (checkIn < {departure} AND checkOut >= {departure}) OR ({arrival} <= checkIn AND {departure} >= checkIn))").ToList();
 
