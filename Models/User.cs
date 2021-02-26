@@ -16,6 +16,7 @@ namespace SuggestorCodeFirstAPI.Models
         public string Email { get; set; }
         public string Contact { get; set; }
         public string Role { get; set; }
+        public string ImgURL { get; set; }
 
         public virtual List<TransportService> TransportServices { get; set; }
         public virtual List<TourGuideService> TourGuideServices { get; set; }

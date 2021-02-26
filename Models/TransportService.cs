@@ -15,6 +15,7 @@ namespace SuggestorCodeFirstAPI.Models
         public string VehicleType { get; set; }
         public int Count { get; set; }
         public decimal PricePerDay { get; set; }
+        public string ImgURL { get; set; }
 
         public Guid? UserID { get; set; }
         public virtual User User { get; set; }

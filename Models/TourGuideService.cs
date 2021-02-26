@@ -14,6 +14,7 @@ namespace SuggestorCodeFirstAPI.Models
         public decimal CostPerDay { get; set; }
         public string Pnumber { get; set; }
         public string OtherDetails { get; set; }
+        public string ImgURL { get; set; }
 
         public Guid? UserID { get; set; }
         public virtual User User { get; set; }
