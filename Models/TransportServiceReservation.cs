@@ -13,6 +13,7 @@ namespace SuggestorCodeFirstAPI.Models
         public DateTime DropOffTime { get; set; }
         public string DropOffLocation { get; set; }
         public string VehicleType { get; set; }
+        public int NoOfPassengers { get; set; }
 
         public Guid? TransportServiceID { get; set; }
         public virtual TransportService TransportService { get; set; }
