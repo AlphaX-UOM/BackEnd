@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "T2/zh5PY25p9e8ai2IVti+GMWWXkswkLh3y0fYn/Qf6E18n84UafUF+/paZxEXrVBNiyAsM+Xv8ElPR8dX6QDA==",
+  "dgSpecHash": "4J5Fu0ChqiitpJAD9qs3GFjh9i1wCVWBgVCnPx31ySXuGMhTBG6tekGjEACCN5npX2MPP30162bn2GvB1YcQJA==",
   "success": true,
-  "projectFilePath": "D:\\Software Project\\CodeFirst-Backend\\2021 02 25 latest\\BackEnd-master\\SuggestorCodeFirstAPI.csproj",
+  "projectFilePath": "D:\\Software Project\\CodeFirst-Backend\\2021 02 25 latest\\EventUpdateWithHashTags\\SuggestorCodeFirstAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Sudam Yasodya\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
     "C:\\Users\\Sudam Yasodya\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",

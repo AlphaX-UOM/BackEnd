@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -63,6 +62,9 @@ namespace SuggestorCodeFirstAPI
                 .WithMany(b => b.HotelsServiceComment)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<PostHashTags>()
+                .HasKey(cs => new { cs.EventPlannerServiceID, cs.HashTagID });
+
         }
 
         public DbSet<Cancellation> Cancellations { get; set; }
@@ -83,8 +85,10 @@ namespace SuggestorCodeFirstAPI
         public DbSet<TransportServiceReservation> TransportServiceReservations { get; set; }
         public DbSet<HotelServiceRoomType> HotelServiceRoomTypes { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<HashTag> HashTags { get; set; }
+        public DbSet<PostHashTags> PostHashTags { get; set; }
 
-        
+
 
     }
 

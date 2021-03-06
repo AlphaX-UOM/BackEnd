@@ -26,7 +26,7 @@ namespace SuggestorCodeFirstAPI.Controllers
         public async Task<ActionResult<IEnumerable<EventPlannerService>>> GetEventPlannerServices(int? eventValue)
         {
             var events = _context.EventPlannerServices.AsQueryable();
-            if(eventValue != null)
+            if (eventValue != null)
             {
                 events = _context.EventPlannerServices.Where(i => i.Price < eventValue);
             }
@@ -71,6 +71,23 @@ namespace SuggestorCodeFirstAPI.Controllers
 
         }
 
+
+        [HttpGet("Hash")]
+        public async Task<ActionResult<IEnumerable<EventPlannerService>>> GetSuggestorEventPlannerServiceswithHashTags(string? hashtag)
+        {
+            var events = _context.EventPlannerServices
+                                    .Include(u => u.PostHashTags)
+                                        .ThenInclude(e => e.HashTag)
+                                    .ToList();
+
+            if (events == null)
+            {
+                return NotFound();
+            }
+
+            return events;
+        }
+
         // GET: api/EventPlannerServices/5
         [HttpGet("{id}")]
         public async Task<ActionResult<EventPlannerService>> GetEventPlannerService(Guid id)
@@ -84,6 +101,24 @@ namespace SuggestorCodeFirstAPI.Controllers
 
             return eventPlannerService;
         }
+
+        [HttpGet("GetEventDetails/{id}")]
+        public async Task<ActionResult<EventPlannerService>> GetEventPlannerServiceDetails(Guid id)
+        {
+            var eventPlannerService = await _context.EventPlannerServices
+                                                     .Include(eve => eve.PostHashTags)
+                                                        .ThenInclude(eve => eve.HashTag)
+                                                     .Where(eve => eve.ID == id)
+                                                     .FirstOrDefaultAsync();
+
+            if (eventPlannerService == null)
+            {
+                return NotFound();
+            }
+
+            return eventPlannerService;
+        }
+
 
         // PUT: api/EventPlannerServices/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for

@@ -9,11 +9,17 @@ namespace SuggestorCodeFirstAPI.Models
     {
         public Guid ID { get; set; }
         public string Name { get; set; }
+        public string BusinessName { get; set; }
         public decimal Price { get; set; }
         public string Venue { get; set; }
+        public string District { get; set; }
+        public string Longitude { get; set; }
+        public string Latitude { get; set; }
         public DateTime Date { get; set; }
         public DateTime Time { get; set; }
         public string EventType { get; set; }
+        public string Audience { get; set; }
+        public string Frequency { get; set; }
         public string OtherDetails { get; set; }
         public string ImgURL { get; set; }
 
@@ -22,5 +28,6 @@ namespace SuggestorCodeFirstAPI.Models
 
         public virtual List<EventPlannerServiceReservation> EventPlannerServiceReservations { get; set; }
         public virtual List<EventPlannerServiceComment> EventPlannerServiceComments { get; set; }
+        public List<PostHashTags> PostHashTags { get; set; }
     }
 }
