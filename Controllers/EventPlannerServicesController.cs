@@ -53,15 +53,25 @@ namespace SuggestorCodeFirstAPI.Controllers
         }
 
         [HttpGet("Sug")]
-        public async Task<ActionResult<IEnumerable<EventPlannerService>>> GetSuggestorEventPlannerServices(DateTime? arrival, DateTime? departure, int? eventValue)
+        public async Task<ActionResult<IEnumerable<EventPlannerService>>> GetSuggestorEventPlannerServices(DateTime? arrival, DateTime? departure, int? eventValue, string? hashtag)
         {
 
 
-            if ((arrival != null) && (departure != null) && (eventValue != null))
+            if ((arrival != null) && (departure != null) && (eventValue != null) && (hashtag != null))
             {
-                var events = _context.EventPlannerServices.FromSqlInterpolated($"SELECT * from EventPlannerServices WHERE Price<={eventValue} AND ID NOT IN ( SELECT EventPlannerServiceID as ID FROM   EventPlannerServices T JOIN Reservations R ON T.ID = R.EventPlannerServiceID WHERE(checkIn <= {arrival} AND checkOut >= {arrival}) OR (checkIn < {departure} AND checkOut >= {departure}) OR ({arrival} <= checkIn AND {departure} >= checkIn))").ToList();
 
-                return events;
+
+                var events = _context.EventPlannerServices.FromSqlInterpolated($"SELECT* FROM PostHashTags P JOIN (SELECT * FROM EventPlannerServices WHERE Price<={eventValue} AND ID NOT IN ( SELECT EventPlannerServiceID as ID FROM   EventPlannerServices T JOIN Reservations R ON T.ID = R.EventPlannerServiceID WHERE(checkIn <= {arrival} AND checkOut >= {arrival}) OR (checkIn < {departure} AND checkOut >= {departure}) OR ({arrival} <= checkIn AND {departure} >= checkIn))) as ff ON P.EventPlannerServiceID = ff.ID WHERE P.HashTagID = {hashtag}").ToList();
+               
+                if(events==null)
+                {
+                    events = _context.EventPlannerServices.FromSqlInterpolated($"SELECT * from EventPlannerServices WHERE Price<={eventValue} AND ID NOT IN ( SELECT EventPlannerServiceID as ID FROM   EventPlannerServices T JOIN Reservations R ON T.ID = R.EventPlannerServiceID WHERE(checkIn <= {arrival} AND checkOut >= {arrival}) OR (checkIn < {departure} AND checkOut >= {departure}) OR ({arrival} <= checkIn AND {departure} >= checkIn))").ToList();
+                    return events;
+                }
+                else
+                {
+                    return events;
+                }   
             }
             else
             {
