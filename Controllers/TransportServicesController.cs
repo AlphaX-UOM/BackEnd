@@ -36,15 +36,21 @@ namespace SuggestorCodeFirstAPI.Controllers
         }
 
         [HttpGet("Res")]
-        public async Task<ActionResult<IEnumerable<TransportService>>> GetNonTransportServices(DateTime? arrival, DateTime? departure )
+        public async Task<ActionResult<IEnumerable<TransportService>>> GetNonTransportServices(DateTime? arrival, DateTime? departure,int? seats )
         {
             
 
-            if ((arrival != null)&&(departure != null))
+            if ((arrival != null)&&(departure != null) && (seats != null))
             {
-               var  transportService = _context.TransportServices.FromSqlInterpolated($"SELECT * from TransportServices WHERE ID NOT IN ( SELECT TransportServiceID as ID FROM   TransportServices T JOIN Reservations R ON T.ID = R.transportServiceID WHERE(checkIn <= {arrival} AND checkOut >= {arrival}) OR (checkIn < {departure} AND checkOut >= {departure}) OR ({arrival} <= checkIn AND {departure} >= checkIn))").ToList();
+               var  transportService = _context.TransportServices.FromSqlInterpolated($"SELECT * from TransportServices WHERE NoOfSeats>={seats} AND ID NOT IN ( SELECT TransportServiceID as ID FROM   TransportServices T JOIN Reservations R ON T.ID = R.transportServiceID WHERE(checkIn <= {arrival} AND checkOut >= {arrival}) OR (checkIn < {departure} AND checkOut >= {departure}) OR ({arrival} <= checkIn AND {departure} >= checkIn))").ToList();
 
                 return  transportService;
+            }
+            else if ((arrival != null) && (departure != null))
+            {
+                var transportService = _context.TransportServices.FromSqlInterpolated($"SELECT * from TransportServices WHERE ID NOT IN ( SELECT TransportServiceID as ID FROM   TransportServices T JOIN Reservations R ON T.ID = R.transportServiceID WHERE(checkIn <= {arrival} AND checkOut >= {arrival}) OR (checkIn < {departure} AND checkOut >= {departure}) OR ({arrival} <= checkIn AND {departure} >= checkIn))").ToList();
+
+                return transportService;
             }
             else
             {
