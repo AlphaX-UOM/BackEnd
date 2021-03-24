@@ -46,7 +46,8 @@ namespace SuggestorCodeFirstAPI
                     builder =>
                     {
                         builder.WithOrigins("http://localhost:3000",
-                                            "http://localhost:19006")
+                                            "http://localhost:19006",
+											"https://vvisitfrontend.azurewebsites.net")
                                             .AllowAnyHeader()
                                             .AllowAnyMethod();
                     });
