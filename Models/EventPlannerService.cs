@@ -11,6 +11,7 @@ namespace SuggestorCodeFirstAPI.Models
         public string Name { get; set; }
         public string BusinessName { get; set; }
         public decimal Price { get; set; }
+        public decimal PricePerKid { get; set; }
         public string Venue { get; set; }
         public string District { get; set; }
         public string Longitude { get; set; }
@@ -22,6 +23,8 @@ namespace SuggestorCodeFirstAPI.Models
         public string Frequency { get; set; }
         public string OtherDetails { get; set; }
         public string ImgURL { get; set; }
+        public string ImgURL02 { get; set; }
+        public string ImgURL03 { get; set; }
 
         public Guid? UserID { get; set; }
         public virtual User User { get; set; }
