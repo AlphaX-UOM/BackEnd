@@ -137,6 +137,8 @@ namespace SuggestorCodeFirstAPI.Controllers
             var eventPlannerService = await _context.EventPlannerServices
                                                      .Include(eve => eve.PostHashTags)
                                                         .ThenInclude(eve => eve.HashTag)
+                                                    .Include(eve => eve.EventPlannerServiceComments)
+                                                        .ThenInclude(eve => eve.User)
                                                      .Where(eve => eve.ID == id)
                                                      .FirstOrDefaultAsync();
 
