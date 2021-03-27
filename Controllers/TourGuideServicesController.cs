@@ -34,6 +34,23 @@ namespace SuggestorCodeFirstAPI.Controllers
             return await guide.ToListAsync();
         }
 
+        [HttpGet("GetGuideDetails/{id}")]
+        public async Task<ActionResult<TourGuideService>> GetGuideServiceDetails(Guid id)
+        {
+            var guideService = await _context.TourGuideServices
+                                                    .Include(eve => eve.TourGuideServiceComments)
+                                                        .ThenInclude(eve => eve.User)
+                                                     .Where(eve => eve.ID == id)
+                                                     .FirstOrDefaultAsync();
+
+            if (guideService == null)
+            {
+                return NotFound();
+            }
+
+            return guideService;
+        }
+
         [HttpGet("Res")]
         public async Task<ActionResult<IEnumerable<TourGuideService>>> GetNonTourGuideServices(DateTime? arrival, DateTime? departure)
         {

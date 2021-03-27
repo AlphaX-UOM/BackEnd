@@ -33,6 +33,23 @@ namespace SuggestorCodeFirstAPI.Controllers
             return await hotel.ToListAsync();
         }
 
+        [HttpGet("GetHotelDetails/{id}")]
+        public async Task<ActionResult<HotelsService>> GetHotelServiceDetails(Guid id)
+        {
+            var hotelService = await _context.HotelsServices
+                                                    .Include(eve => eve.HotelsServiceComments)
+                                                        .ThenInclude(eve => eve.User)
+                                                     .Where(eve => eve.ID == id)
+                                                     .FirstOrDefaultAsync();
+
+            if (hotelService == null)
+            {
+                return NotFound();
+            }
+
+            return hotelService;
+        }
+
         [HttpGet("Res")]
         public async Task<ActionResult<IEnumerable<HotelsService>>> GetNonHotelsServices(DateTime? arrival, DateTime? departure,int? capacity)
         {

@@ -35,6 +35,23 @@ namespace SuggestorCodeFirstAPI.Controllers
             return await transportService.ToListAsync();
         }
 
+        [HttpGet("GetTransportDetails/{id}")]
+        public async Task<ActionResult<TransportService>> GetTransportServiceDetails(Guid id)
+        {
+            var transportService = await _context.TransportServices
+                                                    .Include(eve => eve.TransportServiceComments)
+                                                        .ThenInclude(eve => eve.User)
+                                                     .Where(eve => eve.ID == id)
+                                                     .FirstOrDefaultAsync();
+
+            if (transportService == null)
+            {
+                return NotFound();
+            }
+
+            return transportService;
+        }
+
         [HttpGet("Res")]
         public async Task<ActionResult<IEnumerable<TransportService>>> GetNonTransportServices(DateTime? arrival, DateTime? departure,int? seats )
         {
