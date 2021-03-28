@@ -15,6 +15,7 @@ namespace SuggestorCodeFirstAPI.Models
         public string Pnumber { get; set; }
         public string RoomType { get; set; }
         public int Capacity { get; set; }
+        public int Stars { get; set; }
         public string Features { get; set; }
         public string OtherDetails { get; set; }
         public string ImgURL { get; set; }
