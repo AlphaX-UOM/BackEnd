@@ -28,5 +28,6 @@ namespace SuggestorCodeFirstAPI.Models
 
         public virtual List<TransportServiceReservation> TransportServiceReservations { get; set; }
         public virtual List<TransportServiceComment> TransportServiceComments { get; set; }
+        public virtual List<TransportServiceRating> TransportServiceRatings { get; set; }
     }
 }

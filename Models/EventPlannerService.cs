@@ -31,6 +31,7 @@ namespace SuggestorCodeFirstAPI.Models
 
         public virtual List<EventPlannerServiceReservation> EventPlannerServiceReservations { get; set; }
         public virtual List<EventPlannerServiceComment> EventPlannerServiceComments { get; set; }
+        public virtual List<EventPlannerServiceRating> EventPlannerServiceRatings { get; set; }
         public List<PostHashTags> PostHashTags { get; set; }
     }
 }

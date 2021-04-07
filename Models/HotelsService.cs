@@ -26,5 +26,6 @@ namespace SuggestorCodeFirstAPI.Models
 
         public virtual List<HotelsServiceReservation> HotelsServiceReservations { get; set; }
         public virtual List<HotelsServiceComment> HotelsServiceComments { get; set; }
+        public virtual List<HotelsServiceRating> HotelsServiceRatings { get; set; }
     }
 }

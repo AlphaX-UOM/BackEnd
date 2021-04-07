@@ -9396,11 +9396,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Software Project\\CodeFirst-Backend\\2021 02 25 latest\\EventUpdateWithHashTags\\SuggestorCodeFirstAPI.csproj",
+      "projectUniqueName": "D:\\Software Project\\CodeFirst-Backend\\April Folders\\BackEnd\\SuggestorCodeFirstAPI.csproj",
       "projectName": "SuggestorCodeFirstAPI",
-      "projectPath": "D:\\Software Project\\CodeFirst-Backend\\2021 02 25 latest\\EventUpdateWithHashTags\\SuggestorCodeFirstAPI.csproj",
+      "projectPath": "D:\\Software Project\\CodeFirst-Backend\\April Folders\\BackEnd\\SuggestorCodeFirstAPI.csproj",
       "packagesPath": "C:\\Users\\Sudam Yasodya\\.nuget\\packages\\",
-      "outputPath": "D:\\Software Project\\CodeFirst-Backend\\2021 02 25 latest\\EventUpdateWithHashTags\\obj\\",
+      "outputPath": "D:\\Software Project\\CodeFirst-Backend\\April Folders\\BackEnd\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"
