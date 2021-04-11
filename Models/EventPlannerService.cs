@@ -12,6 +12,8 @@ namespace SuggestorCodeFirstAPI.Models
         public string BusinessName { get; set; }
         public decimal Price { get; set; }
         public decimal PricePerKid { get; set; }
+        public int AdultTickets { get; set; }
+        public int KidTickets { get; set; }
         public string Venue { get; set; }
         public string District { get; set; }
         public string Longitude { get; set; }

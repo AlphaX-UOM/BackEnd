@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,12 +63,21 @@ namespace SuggestorCodeFirstAPI.Controllers
 
 
         [HttpPost("Login")]
-        public async Task<ActionResult<UserWithToken>> Login([FromBody] User user)
+        public async Task<ActionResult<UserWithToken>> Login()
         {
-             user = await _context.Users
+            var authenticationHeaderValue = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
+            if (!Request.Headers.ContainsKey("Authorization"))
+                return NotFound();
+
+            var bytes = Convert.FromBase64String(authenticationHeaderValue.Parameter);
+            string[] credentials = Encoding.UTF8.GetString(bytes).Split(":");
+            string emailAddress = credentials[0];
+            string password = credentials[1];
+
+             var user = await _context.Users
                                     .Include(u => u.Reservations)
-                                .Where(u => u.Email == user.Email
-                                   && u.Password == user.Password)
+                                .Where(u => u.Email == emailAddress
+                                   && u.Password == password)
                                 .FirstOrDefaultAsync();
 
             if (user == null)
@@ -88,9 +98,10 @@ namespace SuggestorCodeFirstAPI.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Email)
+                    new Claim("ID", user.ID.ToString()),
+                    new Claim("Role", user.Role)
                 }),
-                Expires = DateTime.UtcNow.AddMonths(6),
+                Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
                 SecurityAlgorithms.HmacSha256Signature)
             };
