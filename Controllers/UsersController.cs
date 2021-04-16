@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SuggestorCodeFirstAPI;
 using SuggestorCodeFirstAPI.Models;
+using Ubiety.Dns.Core;
 
 namespace SuggestorCodeFirstAPI.Controllers
 {
@@ -157,6 +158,80 @@ namespace SuggestorCodeFirstAPI.Controllers
             return CreatedAtAction("GetUser", new { id = user.ID }, user);
         }
 
+        [HttpPost("RegisterProtected")]
+        public async Task<ActionResult<User>> RegisterUser(User user)
+        {
+            if (UserExistsByMail(user.Email))
+            {
+                return BadRequest();
+            }
+
+            CreatePasswordHash(user.Password, out byte[] passwordHash, out byte[] passwordSalt);
+
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetUser", new { id = user.ID }, user);
+        }
+
+        [HttpPost("LoginProtected")]
+        public async Task<ActionResult<UserWithToken>> LoginUser()
+        {
+            var authenticationHeaderValue = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
+            if (!Request.Headers.ContainsKey("Authorization"))
+                return NotFound();
+
+            var bytes = Convert.FromBase64String(authenticationHeaderValue.Parameter);
+            string[] credentials = Encoding.UTF8.GetString(bytes).Split(":");
+            string emailAddress = credentials[0];
+            string password = credentials[1];
+
+            var user = await _context.Users
+                                   .Include(u => u.Reservations)
+                               .Where(u => u.Email == emailAddress)
+                               .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            else if(!VerifyPasswordHash(password,user.PasswordHash,user.PasswordSalt))
+            {
+                return BadRequest();
+            }
+            else
+            {
+
+                UserWithToken userWithToken = new UserWithToken(user);
+
+                if (userWithToken == null)
+                {
+                    return NotFound();
+                }
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_jwtsettings.SecretKey);
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                    new Claim("ID", user.ID.ToString()),
+                    new Claim("Role", user.Role)
+                    }),
+                    Expires = DateTime.UtcNow.AddHours(2),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                userWithToken.Token = tokenHandler.WriteToken(token);
+
+                return userWithToken;
+            }
+        }
+
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<User>> DeleteUser(Guid id)
@@ -176,6 +251,34 @@ namespace SuggestorCodeFirstAPI.Controllers
         private bool UserExists(Guid id)
         {
             return _context.Users.Any(e => e.ID == id);
+        }
+
+        private void CreatePasswordHash(string password, out byte[] passwordHash,out byte[] passwordSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
+        }
+        private bool UserExistsByMail(string email)
+        {
+            return _context.Users.Any(e => e.Email == email);
+        }
+        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            using(var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                for(int i = 0; i < computedHash.Length; i++)
+                {
+                    if (computedHash[i] != passwordHash[i])
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
         }
     }
 }
