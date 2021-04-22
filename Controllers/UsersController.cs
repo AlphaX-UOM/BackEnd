@@ -2,16 +2,20 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Headers;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using SuggestorCodeFirstAPI;
 using SuggestorCodeFirstAPI.Models;
 using Ubiety.Dns.Core;
@@ -41,7 +45,7 @@ namespace SuggestorCodeFirstAPI.Controllers
         }
 
         // GET: api/Users/5
-       // [Authorize]
+        ///[Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(Guid id)
         {
@@ -112,7 +116,53 @@ namespace SuggestorCodeFirstAPI.Controllers
             return userWithToken;
         }
 
+        [HttpPut("PasswordChange/{id}")]
+        public async Task<IActionResult> PutUser(Guid id)
+        {
+            var authenticationHeaderValue = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
+            if (!Request.Headers.ContainsKey("Authorization"))
+                return NotFound();
 
+            var bytes = Convert.FromBase64String(authenticationHeaderValue.Parameter);
+            string[] passwords = Encoding.UTF8.GetString(bytes).Split(":");
+            string oldPassword = passwords[0];
+            string newPassword = passwords[1];
+
+
+
+            var user = await _context.Users
+                               .Where(u =>u.ID == id)
+                               .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            else if (!VerifyPasswordHash(oldPassword, user.PasswordHash, user.PasswordSalt))
+            {
+                return BadRequest();
+            }
+            else
+            {
+                CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
+
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
+
+                _context.Entry(user).State = EntityState.Modified;
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                        throw;
+                }
+
+                return NoContent();
+            }
+        }
 
         // PUT: api/Users/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -174,7 +224,105 @@ namespace SuggestorCodeFirstAPI.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
+            //creating a token
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_jwtsettings.SecretKey);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim("compareKey", user.ID.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddMonths(6),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
+                SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            
+            var hosturl = "https://alphax-api.azurewebsites.net/api/users/ConfirmEmail?";
+            var useridurl = "userId=" + user.ID + "&&";
+            var tokenidurl = "token=" + System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(token.ToString()));
+            var confirmationLink = hosturl + useridurl + tokenidurl;
+
+
+            /* MailMessage mailMessage = new MailMessage("vvisitalphax@gmail.com", "gdsudam@gmail.com");
+             mailMessage.Subject = "Email Confirmation for Vvisit Platform";
+             mailMessage.Body = confirmationLink;
+
+             SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+             smtpClient.Credentials = new System.Net.NetworkCredential()
+             {
+                 UserName = "vvisitalphax@gmail.com",
+                 Password = "qwertyuiop0112294169a"
+             };
+             smtpClient.EnableSsl = true;
+             smtpClient.Send(mailMessage);*/
+
+            ///////
+            ///
+            var fromAddress = new MailAddress("vvisitalphax@gmail.com", "From AlphaX Admin");
+            var toAddress = new MailAddress(user.Email, "To "+user.FirstName);
+            const string fromPassword = "qwertyuiop0112294169a";
+            const string subject = "Email Confirmation for Vvisit Platform";
+            string body = confirmationLink;
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+            };
+            using (var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body
+            })
+            {
+                smtp.Send(message);
+            }
+
             return CreatedAtAction("GetUser", new { id = user.ID }, user);
+        }
+
+        [HttpGet("ConfirmEmail")]
+        public async Task<ActionResult<User>> EmailConfirm(string userId, string token)
+        {
+            var bytes = Convert.FromBase64String(token);
+            string[] mytoken = Encoding.UTF8.GetString(bytes).Split(".");
+            string myObject = mytoken[1];
+
+            
+            var myUserId = JObject.Parse(myObject)["compareKey"].ToString();
+
+            if (myUserId == userId)
+            {
+                Guid newGuid = Guid.Parse(userId);
+                var user = await _context.Users.FindAsync(newGuid);
+
+                if(user == null)
+                {
+                    return BadRequest();
+                }
+
+                user.Verified = true;
+                _context.Entry(user).State = EntityState.Modified;
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+
+                    return Redirect("https://vvisitfrontend.azurewebsites.net/");
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                        throw;
+                }
+            }
+
+            return NotFound();
         }
 
         [HttpPost("LoginProtected")]
@@ -247,6 +395,26 @@ namespace SuggestorCodeFirstAPI.Controllers
 
             return user;
         }
+
+      /*  [HttpGet("ConfirmEmail")]
+        public async Task<ActionResult<User>> ConfirmUser(string userId, string token)
+        {
+
+            var decodedToken = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(token));
+            var handler = new JwtSecurityTokenHandler();
+            var tokenNew = handler.ReadJwtToken(decodedToken);
+
+            if (userId == null || token==null)
+            {
+                return NotFound();
+            }
+            else if(userId == tokenNew.Claims.ToString())
+            {
+                
+            }
+
+            return user;
+        } */
 
         private bool UserExists(Guid id)
         {

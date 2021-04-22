@@ -1021,3 +1021,5 @@ D:\Software Project\CodeFirst-Backend\April Folders\BackEnd\bin\Debug\netcoreapp
 D:\Software Project\CodeFirst-Backend\April Folders\BackEnd\bin\Debug\netcoreapp3.1\Zstandard.Net.dll
 D:\Software Project\CodeFirst-Backend\April Folders\BackEnd\bin\Debug\netcoreapp3.1\Renci.SshNet.dll
 D:\Software Project\CodeFirst-Backend\April Folders\BackEnd\bin\Debug\netcoreapp3.1\SshNet.Security.Cryptography.dll
+D:\Software Project\CodeFirst-Backend\April Folders\BackEnd\bin\Debug\netcoreapp3.1\SendGrid.dll
+D:\Software Project\CodeFirst-Backend\April Folders\BackEnd\bin\Debug\netcoreapp3.1\StarkbankEcdsa.dll

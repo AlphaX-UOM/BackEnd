@@ -81,6 +81,10 @@
             "MySql.Data": {
               "target": "Package",
               "version": "[8.0.23, )"
+            },
+            "SendGrid": {
+              "target": "Package",
+              "version": "[9.22.0, )"
             }
           },
           "imports": [
