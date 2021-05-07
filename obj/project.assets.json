@@ -9769,11 +9769,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Software Project\\CodeFirst-Backend\\April Folders\\BackEnd\\SuggestorCodeFirstAPI.csproj",
+      "projectUniqueName": "D:\\Software Project\\CodeFirst-Backend\\April Folders\\Final\\BackEnd\\SuggestorCodeFirstAPI.csproj",
       "projectName": "SuggestorCodeFirstAPI",
-      "projectPath": "D:\\Software Project\\CodeFirst-Backend\\April Folders\\BackEnd\\SuggestorCodeFirstAPI.csproj",
+      "projectPath": "D:\\Software Project\\CodeFirst-Backend\\April Folders\\Final\\BackEnd\\SuggestorCodeFirstAPI.csproj",
       "packagesPath": "C:\\Users\\Sudam Yasodya\\.nuget\\packages\\",
-      "outputPath": "D:\\Software Project\\CodeFirst-Backend\\April Folders\\BackEnd\\obj\\",
+      "outputPath": "D:\\Software Project\\CodeFirst-Backend\\April Folders\\Final\\BackEnd\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"

@@ -148,6 +148,7 @@ namespace SuggestorCodeFirstAPI.Controllers
 
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;
+                user.Password = newPassword;
 
                 _context.Entry(user).State = EntityState.Modified;
 
@@ -244,22 +245,6 @@ namespace SuggestorCodeFirstAPI.Controllers
             var tokenidurl = "token=" + System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(token.ToString()));
             var confirmationLink = hosturl + useridurl + tokenidurl;
 
-
-            /* MailMessage mailMessage = new MailMessage("vvisitalphax@gmail.com", "gdsudam@gmail.com");
-             mailMessage.Subject = "Email Confirmation for Vvisit Platform";
-             mailMessage.Body = confirmationLink;
-
-             SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
-             smtpClient.Credentials = new System.Net.NetworkCredential()
-             {
-                 UserName = "vvisitalphax@gmail.com",
-                 Password = "qwertyuiop0112294169a"
-             };
-             smtpClient.EnableSsl = true;
-             smtpClient.Send(mailMessage);*/
-
-            ///////
-            ///
             var fromAddress = new MailAddress("vvisitalphax@gmail.com", "From AlphaX Admin");
             var toAddress = new MailAddress(user.Email, "To "+user.FirstName);
             const string fromPassword = "qwertyuiop0112294169a";
@@ -346,6 +331,10 @@ namespace SuggestorCodeFirstAPI.Controllers
             {
                 return NotFound();
             }
+            else if (user.Verified == false)
+            {
+                return Unauthorized();
+            }
             else if(!VerifyPasswordHash(password,user.PasswordHash,user.PasswordSalt))
             {
                 return BadRequest();
@@ -380,6 +369,101 @@ namespace SuggestorCodeFirstAPI.Controllers
             }
         }
 
+        [HttpPost("CheckEmail")]
+        public async Task<ActionResult<User>> EmailCheckPasswordResetUser()
+        {
+            var authenticationHeaderValue = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
+            if (!Request.Headers.ContainsKey("Authorization"))
+                return NotFound();
+
+            var bytes = Convert.FromBase64String(authenticationHeaderValue.Parameter);
+            string[] credentials = Encoding.UTF8.GetString(bytes).Split(":");
+            string emailAddress = credentials[1];
+
+            var user = await _context.Users
+                               .Where(u => u.Email == emailAddress)
+                               .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                var hosturl = "https://vvisitfrontend.azurewebsites.net/passwordreset/";
+                var useridurl = user.ID.ToString();
+                var resetRedirectLink = hosturl + useridurl;
+
+                var fromAddress = new MailAddress("vvisitalphax@gmail.com", "From AlphaX Admin");
+                var toAddress = new MailAddress(user.Email, "To " + user.FirstName);
+                const string fromPassword = "qwertyuiop0112294169a";
+                const string subject = "Please click on the link to reset your password";
+                string body = resetRedirectLink;
+
+                var smtp = new SmtpClient
+                {
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                };
+                using (var message = new MailMessage(fromAddress, toAddress)
+                {
+                    Subject = subject,
+                    Body = body
+                })
+                {
+                    smtp.Send(message);
+                }
+                return Ok();
+
+            }
+        }
+
+        [HttpPut("PasswordReset")]
+        public async Task<IActionResult> PasswordResetUser()
+        {
+            var authenticationHeaderValue = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
+            if (!Request.Headers.ContainsKey("Authorization"))
+                return NotFound();
+
+            var bytes = Convert.FromBase64String(authenticationHeaderValue.Parameter);
+            string[] credentials = Encoding.UTF8.GetString(bytes).Split(":");
+            string userStoredId = credentials[0];
+            string newPassword = credentials[1];
+
+            Guid newGuid = Guid.Parse(userStoredId);
+            var user = await _context.Users.FindAsync(newGuid);
+
+            if (user == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
+
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
+                user.Password = newPassword;
+
+                _context.Entry(user).State = EntityState.Modified;
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+
+                    return Redirect("https://vvisitfrontend.azurewebsites.net/");
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
+                }
+            }
+        }
+
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<User>> DeleteUser(Guid id)
@@ -396,25 +480,7 @@ namespace SuggestorCodeFirstAPI.Controllers
             return user;
         }
 
-      /*  [HttpGet("ConfirmEmail")]
-        public async Task<ActionResult<User>> ConfirmUser(string userId, string token)
-        {
-
-            var decodedToken = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(token));
-            var handler = new JwtSecurityTokenHandler();
-            var tokenNew = handler.ReadJwtToken(decodedToken);
-
-            if (userId == null || token==null)
-            {
-                return NotFound();
-            }
-            else if(userId == tokenNew.Claims.ToString())
-            {
-                
-            }
-
-            return user;
-        } */
+      
 
         private bool UserExists(Guid id)
         {

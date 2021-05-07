@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "SlCRf4cFLY5qENHRxaGmhAlyGuTW79byNpfeXawoR72h/iqnawmZdGmJat0xACkA1i3GQqkEWFhcgW280MtpMw==",
+  "dgSpecHash": "gs0SKV8tTfuM/Ur4iVhLOBEfTNy/Z4ZcAqse9GBp7zHQkVDjVvrI/wL+zAPtoib7jSDXMzhMCrAoRwu/DXwq0g==",
   "success": true,
-  "projectFilePath": "D:\\Software Project\\CodeFirst-Backend\\April Folders\\BackEnd\\SuggestorCodeFirstAPI.csproj",
+  "projectFilePath": "D:\\Software Project\\CodeFirst-Backend\\April Folders\\Final\\BackEnd\\SuggestorCodeFirstAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Sudam Yasodya\\.nuget\\packages\\bouncycastle.netcore\\1.8.5\\bouncycastle.netcore.1.8.5.nupkg.sha512",
     "C:\\Users\\Sudam Yasodya\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
