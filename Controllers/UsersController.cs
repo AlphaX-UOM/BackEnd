@@ -44,6 +44,13 @@ namespace SuggestorCodeFirstAPI.Controllers
             return await _context.Users.ToListAsync();
         }
 
+        [Authorize]
+        [HttpGet("AutherizedEndpoint")]
+        public async Task<ActionResult<IEnumerable<User>>> AutherizedGetUsers()
+        {
+            return await _context.Users.ToListAsync();
+        }
+
         // GET: api/Users/5
         ///[Authorize]
         [HttpGet("{id}")]
