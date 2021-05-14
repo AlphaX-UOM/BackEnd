@@ -69,6 +69,7 @@ namespace SuggestorCodeFirstAPI.Controllers
 
         }
 
+
         [HttpGet("Check")]
         public async Task<ActionResult<IEnumerable<HotelsService>>> GetNonHotelsServicesCheck(DateTime? arrival, DateTime? departure)
         {

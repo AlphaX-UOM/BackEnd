@@ -19,6 +19,9 @@ namespace SuggestorCodeFirstAPI.Models
         public string Address { get; set; }
         public string Email { get; set; }
         public string Contact { get; set; }
+        public string BankName { get; set; }
+        public string AccountNo { get; set; }
+        public string NIC { get; set; }
         public string Role { get; set; }
         public string ImgURL { get; set; }
 

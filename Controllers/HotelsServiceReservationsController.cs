@@ -71,6 +71,26 @@ namespace SuggestorCodeFirstAPI.Controllers
 
         }
 
+        [HttpGet("ReservedRooms")]
+        public async Task<ActionResult<IEnumerable<HotelsServiceReservation>>> GetReservedRooms(DateTime? arrival, DateTime? departure, Guid? hotelId)
+        {
+
+
+            if ((arrival != null) && (departure != null) && (hotelId != null))
+            {
+                
+                    var roomCount = _context.HotelsServiceReservations.FromSqlInterpolated($"SELECT * FROM Reservations R WHERE R.HotelsServiceID = {hotelId} AND (checkIn <= {arrival} AND checkOut >= {arrival}) OR (checkIn < {departure} AND checkOut >= {departure}) OR ({arrival} <= checkIn AND {departure} >= checkIn)").ToList();
+
+                    return roomCount;
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+        }
+
+
         // GET: api/HotelsServiceReservations/5
         [HttpGet("{id}")]
         public async Task<ActionResult<HotelsServiceReservation>> GetHotelsServiceReservation(Guid id)
