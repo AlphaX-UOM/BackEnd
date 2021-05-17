@@ -1385,3 +1385,8 @@ D:\Software Project\CodeFirst-Backend\April Folders\May 15\BackEnd\obj\Debug\net
 D:\Software Project\CodeFirst-Backend\April Folders\May 15\BackEnd\obj\Debug\netcoreapp3.1\SuggestorCodeFirstAPI.dll
 D:\Software Project\CodeFirst-Backend\April Folders\May 15\BackEnd\obj\Debug\netcoreapp3.1\SuggestorCodeFirstAPI.pdb
 D:\Software Project\CodeFirst-Backend\April Folders\May 15\BackEnd\obj\Debug\netcoreapp3.1\SuggestorCodeFirstAPI.genruntimeconfig.cache
+D:\Software Project\CodeFirst-Backend\April Folders\May 15\BackEnd\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+D:\Software Project\CodeFirst-Backend\April Folders\May 15\BackEnd\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+D:\Software Project\CodeFirst-Backend\April Folders\May 15\BackEnd\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\Software Project\CodeFirst-Backend\April Folders\May 15\BackEnd\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\Software Project\CodeFirst-Backend\April Folders\May 15\BackEnd\obj\Debug\netcoreapp3.1\SuggestorCodeFirstAPI.MvcApplicationPartsAssemblyInfo.cs

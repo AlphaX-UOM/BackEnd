@@ -55,6 +55,7 @@ namespace SuggestorCodeFirstAPI
             });
 
             services.AddControllers();
+            services.AddSwaggerGen();
 
             services.AddControllersWithViews()
     .AddNewtonsoftJson(options =>
@@ -94,6 +95,12 @@ namespace SuggestorCodeFirstAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Vvisit API V1");
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
