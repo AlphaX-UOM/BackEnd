@@ -431,10 +431,8 @@ namespace SuggestorCodeFirstAPI.Controllers
                 bool emailIsSSL = true;
 
                 //Fetching Email Body Text from EmailTemplate File.  
-                string contentRootPath = _hostingEnvironment.ContentRootPath;
-                string path = "";
-                path = Path.Combine(contentRootPath, "EmailTemplates", "Reset.html");
-                StreamReader str = new StreamReader(path);
+                string FilePath = "D:\\Software Project\\CodeFirst-Backend\\April Folders\\May 15\\BackEnd\\EmailTemplates\\Reset.html";
+                StreamReader str = new StreamReader(FilePath);
                 string MailText = str.ReadToEnd();
                 str.Close();
 
