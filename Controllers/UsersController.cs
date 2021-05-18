@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http.Headers;
@@ -9,6 +10,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -29,11 +31,13 @@ namespace SuggestorCodeFirstAPI.Controllers
     {
         private readonly RepositoryContext _context;
         private readonly JWTSettings _jwtsettings;
+        private IWebHostEnvironment _hostingEnvironment;
 
-        public UsersController(RepositoryContext context, IOptions<JWTSettings> jwtsettings)
+        public UsersController(RepositoryContext context, IOptions<JWTSettings> jwtsettings, IWebHostEnvironment environment)
         {
             _context = context;
             _jwtsettings = jwtsettings.Value;
+            _hostingEnvironment = environment;
         }
 
         // GET: api/Users
@@ -223,7 +227,7 @@ namespace SuggestorCodeFirstAPI.Controllers
             {
                 return BadRequest();
             }
-
+            
             CreatePasswordHash(user.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             user.PasswordHash = passwordHash;
@@ -252,31 +256,50 @@ namespace SuggestorCodeFirstAPI.Controllers
             var tokenidurl = "token=" + System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(token.ToString()));
             var confirmationLink = hosturl + useridurl + tokenidurl;
 
-            var fromAddress = new MailAddress("vvisitalphax@gmail.com", "From AlphaX Admin");
-            var toAddress = new MailAddress(user.Email, "To "+user.FirstName);
-            const string fromPassword = "qwertyuiop0112294169a";
-            const string subject = "Email Confirmation for Vvisit Platform";
-            string body = confirmationLink;
+            string emailSender = "vvisitalphax@gmail.com";
+            string emailSenderPassword = "qwertyuiop0112294169a";
+            string emailSenderHost = "smtp.gmail.com";
+            int emailSenderPort = 587;
+            bool emailIsSSL = true;
 
-            var smtp = new SmtpClient
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-            };
-            using (var message = new MailMessage(fromAddress, toAddress)
-            {
-                Subject = subject,
-                Body = body
-            })
-            {
-                smtp.Send(message);
-            }
+            //Fetching Email Body Text from EmailTemplate File.  
+            string contentRootPath = _hostingEnvironment.ContentRootPath;
+            string path = "";
+            path = Path.Combine(contentRootPath, "EmailTemplates", "Register.html");
+            StreamReader str = new StreamReader(path);
+            string MailText = str.ReadToEnd();
+            str.Close();
+  
+            MailText = MailText.Replace("[newusername]", user.FirstName);
+            MailText = MailText.Replace("[confirmLink]", confirmationLink);
 
-            return CreatedAtAction("GetUser", new { id = user.ID }, user);
+            string subject = "Welcome to Vvisit Platform";
+ 
+            MailMessage _mailmsg = new MailMessage();
+ 
+            _mailmsg.IsBodyHtml = true;
+ 
+            _mailmsg.From = new MailAddress(emailSender);
+ 
+            _mailmsg.To.Add(user.Email);
+
+            _mailmsg.Subject = subject;
+  
+            _mailmsg.Body = MailText;
+  
+            SmtpClient _smtp = new SmtpClient();
+  
+            _smtp.Host = emailSenderHost;
+ 
+            _smtp.Port = emailSenderPort;
+  
+            _smtp.EnableSsl = emailIsSSL;
+ 
+            NetworkCredential _network = new NetworkCredential(emailSender, emailSenderPassword);
+            _smtp.Credentials = _network;  
+            _smtp.Send(_mailmsg);
+
+            return Ok();
         }
 
         [HttpGet("ConfirmEmail")]
@@ -381,7 +404,7 @@ namespace SuggestorCodeFirstAPI.Controllers
         {
             var authenticationHeaderValue = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
             if (!Request.Headers.ContainsKey("Authorization"))
-                return NotFound();
+                return BadRequest();
 
             var bytes = Convert.FromBase64String(authenticationHeaderValue.Parameter);
             string[] credentials = Encoding.UTF8.GetString(bytes).Split(":");
@@ -401,31 +424,50 @@ namespace SuggestorCodeFirstAPI.Controllers
                 var useridurl = user.ID.ToString();
                 var resetRedirectLink = hosturl + useridurl;
 
-                var fromAddress = new MailAddress("vvisitalphax@gmail.com", "From AlphaX Admin");
-                var toAddress = new MailAddress(user.Email, "To " + user.FirstName);
-                const string fromPassword = "qwertyuiop0112294169a";
-                const string subject = "Please click on the link to reset your password";
-                string body = resetRedirectLink;
+                string emailSender = "vvisitalphax@gmail.com";
+                string emailSenderPassword = "qwertyuiop0112294169a";
+                string emailSenderHost = "smtp.gmail.com";
+                int emailSenderPort = 587;
+                bool emailIsSSL = true;
 
-                var smtp = new SmtpClient
-                {
-                    Host = "smtp.gmail.com",
-                    Port = 587,
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-                };
-                using (var message = new MailMessage(fromAddress, toAddress)
-                {
-                    Subject = subject,
-                    Body = body
-                })
-                {
-                    smtp.Send(message);
-                }
+                //Fetching Email Body Text from EmailTemplate File.  
+                string contentRootPath = _hostingEnvironment.ContentRootPath;
+                string path = "";
+                path = Path.Combine(contentRootPath, "EmailTemplates", "Reset.html");
+                StreamReader str = new StreamReader(path);
+                string MailText = str.ReadToEnd();
+                str.Close();
+
+                MailText = MailText.Replace("[newusername]", user.FirstName);
+                MailText = MailText.Replace("[confirmLink]", resetRedirectLink);
+
+                string subject = "Vvisit Platform - Password Reset";
+
+                MailMessage _mailmsg = new MailMessage();
+
+                _mailmsg.IsBodyHtml = true;
+
+                _mailmsg.From = new MailAddress(emailSender);
+
+                _mailmsg.To.Add(user.Email);
+
+                _mailmsg.Subject = subject;
+
+                _mailmsg.Body = MailText;
+
+                SmtpClient _smtp = new SmtpClient();
+
+                _smtp.Host = emailSenderHost;
+
+                _smtp.Port = emailSenderPort;
+
+                _smtp.EnableSsl = emailIsSSL;
+
+                NetworkCredential _network = new NetworkCredential(emailSender, emailSenderPassword);
+                _smtp.Credentials = _network;
+                _smtp.Send(_mailmsg);
+
                 return Ok();
-
             }
         }
 
