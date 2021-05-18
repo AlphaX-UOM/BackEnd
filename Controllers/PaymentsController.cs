@@ -105,13 +105,7 @@ namespace SuggestorCodeFirstAPI.Controllers
             int emailSenderPort = 587;
             bool emailIsSSL = true;
 
-            //Fetching Email Body Text from EmailTemplate File.  
-            string contentRootPath = _hostingEnvironment.ContentRootPath;
-            string path = "";
-            path = Path.Combine(contentRootPath, "EmailTemplates", "Payment.html");
-            StreamReader str = new StreamReader(path);
-            string MailText = str.ReadToEnd();
-            str.Close();
+            string MailText = "<h3>Dear [newusername],</h3><p>Your Payment was succesful</p><p>Payment ID - [paymentid]</p><p>Value - [paymentvalue]</p>";
 
             MailText = MailText.Replace("[newusername]", user.FirstName);
             MailText = MailText.Replace("[paymentid]", payment.ID.ToString());

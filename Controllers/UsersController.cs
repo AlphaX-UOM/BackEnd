@@ -262,13 +262,7 @@ namespace SuggestorCodeFirstAPI.Controllers
             int emailSenderPort = 587;
             bool emailIsSSL = true;
 
-            //Fetching Email Body Text from EmailTemplate File.  
-            string contentRootPath = _hostingEnvironment.ContentRootPath;
-            string path = "";
-            path = Path.Combine(contentRootPath, "EmailTemplates", "Register.html");
-            StreamReader str = new StreamReader(path);
-            string MailText = str.ReadToEnd();
-            str.Close();
+            string MailText = "<h3>Dear [newusername],</h3><p>Thank you for registering with us!<p><a href =[confirmLink]>Click here to verify your email.</ a >";
   
             MailText = MailText.Replace("[newusername]", user.FirstName);
             MailText = MailText.Replace("[confirmLink]", confirmationLink);
@@ -430,14 +424,11 @@ namespace SuggestorCodeFirstAPI.Controllers
                 int emailSenderPort = 587;
                 bool emailIsSSL = true;
 
-                //Fetching Email Body Text from EmailTemplate File.  
-                string FilePath = "D:\\Software Project\\CodeFirst-Backend\\April Folders\\May 15\\BackEnd\\EmailTemplates\\Reset.html";
-                StreamReader str = new StreamReader(FilePath);
-                string MailText = str.ReadToEnd();
-                str.Close();
+                string MailText = "<h3>Dear [newusername],</h3><p>It looks like you fogot your password!<p><a href =[confirmLink]>Click here to reset you password.</ a >";
+               
 
-                MailText = MailText.Replace("[newusername]", user.FirstName);
-                MailText = MailText.Replace("[confirmLink]", resetRedirectLink);
+                 MailText = MailText.Replace("[newusername]", user.FirstName);
+                 MailText = MailText.Replace("[confirmLink]", resetRedirectLink);
 
                 string subject = "Vvisit Platform - Password Reset";
 
