@@ -30,12 +30,27 @@ namespace SuggestorCodeFirstAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            services.AddCors(options =>
             {
-                builder.AllowAnyOrigin()
-                       .AllowAnyMethod()
-                       .AllowAnyHeader();
-            }));
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+
+                        builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                    });
+
+                options.AddPolicy("MyCORSPolicy",
+                    builder =>
+                    {
+                        builder.WithOrigins(Configuration.GetSection("AllowedOrigins").Get<string[]>())
+                                            .AllowAnyHeader()
+                                            .AllowAnyMethod();
+                    });
+
+            });
 
             services.AddControllers();
             services.AddSwaggerGen();
@@ -78,12 +93,6 @@ namespace SuggestorCodeFirstAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors("MyPolicy");
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Vvisit API V1");
-            });
 
             if (env.IsDevelopment())
             {
@@ -94,6 +103,12 @@ namespace SuggestorCodeFirstAPI
             app.UseStaticFiles();
    
             app.UseRouting();
+            app.UseCors("MyCORSPolicy");
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Vvisit API V1");
+            });
 
             app.UseAuthentication();
 
