@@ -9,7 +9,6 @@ namespace SuggestorCodeFirstAPI.Models
     {
         public Guid ID { get; set; }
         public DateTime CreatedAt { get; set; }
-        public int Rating { get; set; }
         public string Content { get; set; }
 
         public Guid? UserID { get; set; }

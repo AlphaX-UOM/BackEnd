@@ -35,16 +35,39 @@ namespace SuggestorCodeFirstAPI.Controllers
             return await transportService.ToListAsync();
         }
 
+        [HttpGet("GetTransportDetails/{id}")]
+        public async Task<ActionResult<TransportService>> GetTransportServiceDetails(Guid id)
+        {
+            var transportService = await _context.TransportServices
+                                                    .Include(eve => eve.TransportServiceComments)
+                                                        .ThenInclude(eve => eve.User)
+                                                     .Where(eve => eve.ID == id)
+                                                     .FirstOrDefaultAsync();
+
+            if (transportService == null)
+            {
+                return NotFound();
+            }
+
+            return transportService;
+        }
+
         [HttpGet("Res")]
-        public async Task<ActionResult<IEnumerable<TransportService>>> GetNonTransportServices(DateTime? arrival, DateTime? departure )
+        public async Task<ActionResult<IEnumerable<TransportService>>> GetNonTransportServices(DateTime? arrival, DateTime? departure,int? seats )
         {
             
 
-            if ((arrival != null)&&(departure != null))
+            if ((arrival != null)&&(departure != null) && (seats != null))
             {
-               var  transportService = _context.TransportServices.FromSqlInterpolated($"SELECT * from TransportServices WHERE ID NOT IN ( SELECT TransportServiceID as ID FROM   TransportServices T JOIN Reservations R ON T.ID = R.transportServiceID WHERE(checkIn <= {arrival} AND checkOut >= {arrival}) OR (checkIn < {departure} AND checkOut >= {departure}) OR ({arrival} <= checkIn AND {departure} >= checkIn))").ToList();
+               var  transportService = _context.TransportServices.FromSqlInterpolated($"SELECT * from TransportServices WHERE NoOfSeats>={seats} AND ID NOT IN ( SELECT TransportServiceID as ID FROM   TransportServices T JOIN Reservations R ON T.ID = R.transportServiceID WHERE(checkIn <= {arrival} AND checkOut >= {arrival}) OR (checkIn < {departure} AND checkOut >= {departure}) OR ({arrival} <= checkIn AND {departure} >= checkIn))").ToList();
 
                 return  transportService;
+            }
+            else if ((arrival != null) && (departure != null))
+            {
+                var transportService = _context.TransportServices.FromSqlInterpolated($"SELECT * from TransportServices WHERE ID NOT IN ( SELECT TransportServiceID as ID FROM   TransportServices T JOIN Reservations R ON T.ID = R.transportServiceID WHERE(checkIn <= {arrival} AND checkOut >= {arrival}) OR (checkIn < {departure} AND checkOut >= {departure}) OR ({arrival} <= checkIn AND {departure} >= checkIn))").ToList();
+
+                return transportService;
             }
             else
             {

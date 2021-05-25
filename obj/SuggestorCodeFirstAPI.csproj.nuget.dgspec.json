@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Software Project\\CodeFirst-Backend\\2021 02 25 latest\\BackEnd-master\\SuggestorCodeFirstAPI.csproj": {}
+    "D:\\Software Project\\CodeFirst-Backend\\April Folders\\May 15\\BackEnd\\SuggestorCodeFirstAPI.csproj": {}
   },
   "projects": {
-    "D:\\Software Project\\CodeFirst-Backend\\2021 02 25 latest\\BackEnd-master\\SuggestorCodeFirstAPI.csproj": {
+    "D:\\Software Project\\CodeFirst-Backend\\April Folders\\May 15\\BackEnd\\SuggestorCodeFirstAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Software Project\\CodeFirst-Backend\\2021 02 25 latest\\BackEnd-master\\SuggestorCodeFirstAPI.csproj",
+        "projectUniqueName": "D:\\Software Project\\CodeFirst-Backend\\April Folders\\May 15\\BackEnd\\SuggestorCodeFirstAPI.csproj",
         "projectName": "SuggestorCodeFirstAPI",
-        "projectPath": "D:\\Software Project\\CodeFirst-Backend\\2021 02 25 latest\\BackEnd-master\\SuggestorCodeFirstAPI.csproj",
+        "projectPath": "D:\\Software Project\\CodeFirst-Backend\\April Folders\\May 15\\BackEnd\\SuggestorCodeFirstAPI.csproj",
         "packagesPath": "C:\\Users\\Sudam Yasodya\\.nuget\\packages\\",
-        "outputPath": "D:\\Software Project\\CodeFirst-Backend\\2021 02 25 latest\\BackEnd-master\\obj\\",
+        "outputPath": "D:\\Software Project\\CodeFirst-Backend\\April Folders\\May 15\\BackEnd\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
@@ -77,6 +77,18 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[3.1.4, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[8.0.23, )"
+            },
+            "SendGrid": {
+              "target": "Package",
+              "version": "[9.22.0, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.1.4, )"
             }
           },
           "imports": [

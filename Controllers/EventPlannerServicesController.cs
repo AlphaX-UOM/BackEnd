@@ -26,7 +26,7 @@ namespace SuggestorCodeFirstAPI.Controllers
         public async Task<ActionResult<IEnumerable<EventPlannerService>>> GetEventPlannerServices(int? eventValue)
         {
             var events = _context.EventPlannerServices.AsQueryable();
-            if(eventValue != null)
+            if (eventValue != null)
             {
                 events = _context.EventPlannerServices.Where(i => i.Price < eventValue);
             }
@@ -52,8 +52,8 @@ namespace SuggestorCodeFirstAPI.Controllers
 
         }
 
-        [HttpGet("Sug")]
-        public async Task<ActionResult<IEnumerable<EventPlannerService>>> GetSuggestorEventPlannerServices(DateTime? arrival, DateTime? departure, int? eventValue)
+        [HttpGet("SugDefault")]
+        public async Task<ActionResult<IEnumerable<EventPlannerService>>> GetSuggestorDefaultEventPlannerServices(DateTime? arrival, DateTime? departure, int? eventValue)
         {
 
 
@@ -71,6 +71,52 @@ namespace SuggestorCodeFirstAPI.Controllers
 
         }
 
+        [HttpGet("Sug")]
+        public async Task<ActionResult<IEnumerable<EventPlannerService>>> GetSuggestorEventPlannerServices(DateTime? arrival, DateTime? departure, int? eventValue, string? hashtag)
+        {
+
+
+            if ((arrival != null) && (departure != null) && (eventValue != null) && (hashtag != null))
+            {
+
+
+                var events = _context.EventPlannerServices.FromSqlInterpolated($"SELECT* FROM PostHashTags P JOIN (SELECT * FROM EventPlannerServices WHERE Price<={eventValue} AND ID NOT IN ( SELECT EventPlannerServiceID as ID FROM   EventPlannerServices T JOIN Reservations R ON T.ID = R.EventPlannerServiceID WHERE(checkIn <= {arrival} AND checkOut >= {arrival}) OR (checkIn < {departure} AND checkOut >= {departure}) OR ({arrival} <= checkIn AND {departure} >= checkIn))) as ff ON P.EventPlannerServiceID = ff.ID WHERE P.HashTagID = {hashtag}").ToList();
+               
+                if(events==null)
+                {
+                    events = _context.EventPlannerServices.FromSqlInterpolated($"SELECT * from EventPlannerServices WHERE Price<={eventValue} AND ID NOT IN ( SELECT EventPlannerServiceID as ID FROM   EventPlannerServices T JOIN Reservations R ON T.ID = R.EventPlannerServiceID WHERE(checkIn <= {arrival} AND checkOut >= {arrival}) OR (checkIn < {departure} AND checkOut >= {departure}) OR ({arrival} <= checkIn AND {departure} >= checkIn))").ToList();
+                    return events;
+                }
+                else
+                {
+                    return events;
+                }   
+            }
+            else
+            {
+                return NotFound();
+            }
+
+
+        }
+
+
+        [HttpGet("Hash")]
+        public async Task<ActionResult<IEnumerable<EventPlannerService>>> GetSuggestorEventPlannerServiceswithHashTags(string? hashtag)
+        {
+            var events = _context.EventPlannerServices
+                                    .Include(u => u.PostHashTags)
+                                        .ThenInclude(e => e.HashTag)
+                                    .ToList();
+
+            if (events == null)
+            {
+                return NotFound();
+            }
+
+            return events;
+        }
+
         // GET: api/EventPlannerServices/5
         [HttpGet("{id}")]
         public async Task<ActionResult<EventPlannerService>> GetEventPlannerService(Guid id)
@@ -84,6 +130,26 @@ namespace SuggestorCodeFirstAPI.Controllers
 
             return eventPlannerService;
         }
+
+        [HttpGet("GetEventDetails/{id}")]
+        public async Task<ActionResult<EventPlannerService>> GetEventPlannerServiceDetails(Guid id)
+        {
+            var eventPlannerService = await _context.EventPlannerServices
+                                                     .Include(eve => eve.PostHashTags)
+                                                        .ThenInclude(eve => eve.HashTag)
+                                                    .Include(eve => eve.EventPlannerServiceComments)
+                                                        .ThenInclude(eve => eve.User)
+                                                     .Where(eve => eve.ID == id)
+                                                     .FirstOrDefaultAsync();
+
+            if (eventPlannerService == null)
+            {
+                return NotFound();
+            }
+
+            return eventPlannerService;
+        }
+
 
         // PUT: api/EventPlannerServices/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for

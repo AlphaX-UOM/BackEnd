@@ -33,8 +33,45 @@ namespace SuggestorCodeFirstAPI.Controllers
             return await hotel.ToListAsync();
         }
 
+        [HttpGet("GetHotelDetails/{id}")]
+        public async Task<ActionResult<HotelsService>> GetHotelServiceDetails(Guid id)
+        {
+            var hotelService = await _context.HotelsServices
+                                                    .Include(eve => eve.HotelsServiceComments)
+                                                        .ThenInclude(eve => eve.User)
+                                                     .Where(eve => eve.ID == id)
+                                                     .FirstOrDefaultAsync();
+
+            if (hotelService == null)
+            {
+                return NotFound();
+            }
+
+            return hotelService;
+        }
+
         [HttpGet("Res")]
-        public async Task<ActionResult<IEnumerable<HotelsService>>> GetNonHotelsServices(DateTime? arrival, DateTime? departure)
+        public async Task<ActionResult<IEnumerable<HotelsService>>> GetNonHotelsServices(DateTime? arrival, DateTime? departure,int? capacity)
+        {
+
+
+            if ((arrival != null) && (departure != null) && (capacity != null))
+            {
+                var hotel = _context.HotelsServices.FromSqlInterpolated($"SELECT * from HotelsServices WHERE Capacity>= {capacity} AND ID NOT IN ( SELECT HotelsServiceID as ID FROM   HotelsServices T JOIN Reservations R ON T.ID = R.HotelsServiceID WHERE(checkIn <= {arrival} AND checkOut >= {arrival}) OR (checkIn < {departure} AND checkOut >= {departure}) OR ({arrival} <= checkIn AND {departure} >= checkIn))").ToList();
+
+                return hotel;
+            }
+            else
+            {
+                return NotFound();
+            }
+
+
+        }
+
+
+        [HttpGet("Check")]
+        public async Task<ActionResult<IEnumerable<HotelsService>>> GetNonHotelsServicesCheck(DateTime? arrival, DateTime? departure)
         {
 
 
@@ -52,6 +89,35 @@ namespace SuggestorCodeFirstAPI.Controllers
 
         }
 
+        [HttpGet("hotel/rooms")]
+        public async Task<ActionResult<IEnumerable<HotelsService>>> GetHotelsServiceRooms(DateTime? arrival, DateTime? departure, string? name)
+        {
+
+
+            if ((arrival != null) && (departure != null) && (name != null))
+            {
+                var hotel = _context.HotelsServices.FromSqlInterpolated($"SELECT * from HotelsServices WHERE Name>= {name} AND ID NOT IN ( SELECT HotelsServiceID as ID FROM   HotelsServices T JOIN Reservations R ON T.ID = R.HotelsServiceID WHERE(checkIn <= {arrival} AND checkOut >= {arrival}) OR (checkIn < {departure} AND checkOut >= {departure}) OR ({arrival} <= checkIn AND {departure} >= checkIn))").ToList();
+
+                return hotel;
+            }
+            else
+            {
+                return NotFound();
+            }
+
+
+        }
+        /*
+                [HttpGet("hotels/landing")]
+                public async Task<ActionResult<IEnumerable<HotelsService>>> GetHotelsServicesLanding()
+                {
+
+                        var hotel = _context.HotelsServices.FromSqlInterpolated($"select  Name,STRING_AGG(Venue,',') Venue,STRING_AGG(PricePerDay,',')PricePerDay,STRING_AGG(District,',') District,STRING_AGG(Pnumber,',') Pnumber,STRING_AGG(Features,',') Features,STRING_AGG(OtherDetails,',') OtherDetails,STRING_AGG(ImgURL,',') ImgURL,STRING_AGG(CONVERT(varchar(100),RoomTypeID),',') RoomTypeID,STRING_AGG(CONVERT(varchar(100),UserID),',') UserID,STRING_AGG(CONVERT(varchar(100),ID),',')ID from HotelsServices group BY Name ORDER BY Name ASC").ToList();
+
+                        return hotel;
+
+                }
+        */
         [HttpGet("Sug")]
         public async Task<ActionResult<IEnumerable<HotelsService>>> GetSuggestorHotelsServices(DateTime? arrival, DateTime? departure, int? hotelValue)
         {

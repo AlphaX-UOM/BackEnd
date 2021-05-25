@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -28,9 +27,19 @@ namespace SuggestorCodeFirstAPI
                 .WithMany(b => b.TransportServiceComments)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<TransportServiceRating>()
+                .HasOne(t => t.TransportService)
+                .WithMany(b => b.TransportServiceRatings)
+                .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<TransportServiceComment>()
                 .HasOne(t => t.User)
                 .WithMany(b => b.TransportServiceComments)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<TransportServiceRating>()
+                .HasOne(t => t.User)
+                .WithMany(b => b.TransportServiceRatings)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<TourGuideServiceComment>()
@@ -38,9 +47,19 @@ namespace SuggestorCodeFirstAPI
                 .WithMany(b => b.TourGuideServiceComments)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<TourGuideServiceRating>()
+                .HasOne(t => t.TourGuideService)
+                .WithMany(b => b.TourGuideServiceRatings)
+                .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<TourGuideServiceComment>()
                 .HasOne(t => t.User)
                 .WithMany(b => b.TourGuideServiceComments)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<TourGuideServiceRating>()
+                .HasOne(t => t.User)
+                .WithMany(b => b.TourGuideServiceRatings)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<EventPlannerServiceComment>()
@@ -48,9 +67,19 @@ namespace SuggestorCodeFirstAPI
                 .WithMany(b => b.EventPlannerServiceComments)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<EventPlannerServiceRating>()
+                .HasOne(t => t.EventPlannerService)
+                .WithMany(b => b.EventPlannerServiceRatings)
+                .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<EventPlannerServiceComment>()
                 .HasOne(t => t.User)
                 .WithMany(b => b.EventPlannerServiceComment)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<EventPlannerServiceRating>()
+                .HasOne(t => t.User)
+                .WithMany(b => b.EventPlannerServiceRatings)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<HotelsServiceComment>()
@@ -58,33 +87,52 @@ namespace SuggestorCodeFirstAPI
                 .WithMany(b => b.HotelsServiceComments)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<HotelsServiceRating>()
+                .HasOne(t => t.HotelsService)
+                .WithMany(b => b.HotelsServiceRatings)
+                .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<HotelsServiceComment>()
                 .HasOne(t => t.User)
                 .WithMany(b => b.HotelsServiceComment)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<HotelsServiceRating>()
+                .HasOne(t => t.User)
+                .WithMany(b => b.HotelsServiceRatings)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<PostHashTags>()
+                .HasKey(cs => new { cs.EventPlannerServiceID, cs.HashTagID });
 
         }
 
         public DbSet<Cancellation> Cancellations { get; set; }
         public DbSet<EventPlannerService> EventPlannerServices { get; set; }
         public DbSet<EventPlannerServiceComment> EventPlannerServiceComments { get; set; }
+        public DbSet<EventPlannerServiceRating> EventPlannerServiceRatings { get; set; }
         public DbSet<EventPlannerServiceReservation> EventPlannerServiceReservations { get; set; }
         public DbSet<HotelsService> HotelsServices { get; set; }
         public DbSet<HotelsServiceComment> HotelsServiceComments { get; set; }
+        public DbSet<HotelsServiceRating> HotelsServiceRatings { get; set; }
         public DbSet<HotelsServiceReservation> HotelsServiceReservations { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<RoomType> RoomTypes { get; set; }
         public DbSet<TourGuideService> TourGuideServices { get; set; }
         public DbSet<TourGuideServiceComment> TourGuideServiceComments { get; set; }
+        public DbSet<TourGuideServiceRating> TourGuideServiceRatings { get; set; }
         public DbSet<TourGuideServiceReservation> TourGuideServiceReservations { get; set; }
         public DbSet<TransportService> TransportServices { get; set; }
         public DbSet<TransportServiceComment> TransportServiceComments { get; set; }
+        public DbSet<TransportServiceRating> TransportServiceRatings { get; set; }
         public DbSet<TransportServiceReservation> TransportServiceReservations { get; set; }
         public DbSet<HotelServiceRoomType> HotelServiceRoomTypes { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<HashTag> HashTags { get; set; }
+        public DbSet<PostHashTags> PostHashTags { get; set; }
 
-        
+
 
     }
 

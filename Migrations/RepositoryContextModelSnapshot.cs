@@ -54,13 +54,43 @@ namespace SuggestorCodeFirstAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("AdultTickets")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Audience")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("District")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EventType")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Frequency")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ImgURL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgURL02")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgURL03")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("KidTickets")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Latitude")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Longitude")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -70,6 +100,9 @@ namespace SuggestorCodeFirstAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PricePerKid")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("Time")
@@ -103,6 +136,27 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<Guid?>("EventPlannerServiceID")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("UserID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("EventPlannerServiceID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("EventPlannerServiceComments");
+                });
+
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.EventPlannerServiceRating", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("EventPlannerServiceID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
@@ -115,7 +169,21 @@ namespace SuggestorCodeFirstAPI.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("EventPlannerServiceComments");
+                    b.ToTable("EventPlannerServiceRatings");
+                });
+
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.HashTag", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("HashTags");
                 });
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.HotelServiceRoomType", b =>
@@ -144,17 +212,44 @@ namespace SuggestorCodeFirstAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AddressLine01")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressLine02")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AltPnumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Amenities")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BedType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ContactName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("District")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Features")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImgURL")
+                    b.Property<string>("HotelImgURL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Languages")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumOfRooms")
+                        .HasColumnType("int");
 
                     b.Property<string>("OtherDetails")
                         .HasColumnType("nvarchar(max)");
@@ -165,18 +260,25 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<decimal>("PricePerDay")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid?>("RoomTypeID")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("RoomImgURL01")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoomImgURL02")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoomImgURL03")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoomType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Stars")
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("UserID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Venue")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("ID");
-
-                    b.HasIndex("RoomTypeID");
 
                     b.HasIndex("UserID");
 
@@ -198,6 +300,27 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<Guid?>("HotelsServiceID")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("UserID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("HotelsServiceID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("HotelsServiceComments");
+                });
+
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.HotelsServiceRating", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("HotelsServiceID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
@@ -210,7 +333,7 @@ namespace SuggestorCodeFirstAPI.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("HotelsServiceComments");
+                    b.ToTable("HotelsServiceRatings");
                 });
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.Payment", b =>
@@ -236,6 +359,21 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.PostHashTags", b =>
+                {
+                    b.Property<Guid?>("EventPlannerServiceID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("HashTagID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("EventPlannerServiceID", "HashTagID");
+
+                    b.HasIndex("HashTagID");
+
+                    b.ToTable("PostHashTags");
                 });
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.Reservation", b =>
@@ -352,9 +490,6 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
                     b.Property<Guid?>("TourGuideServiceID")
                         .HasColumnType("uniqueidentifier");
 
@@ -370,14 +505,44 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.ToTable("TourGuideServiceComments");
                 });
 
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TourGuideServiceRating", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("TourGuideServiceID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("TourGuideServiceID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("TourGuideServiceRatings");
+                });
+
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TransportService", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("AirCondition")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Brand")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -385,13 +550,25 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<string>("District")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ImgURL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Model")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("NoOfSeats")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Pnumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PricePer1KM")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("PricePerDay")
@@ -422,9 +599,6 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
                     b.Property<Guid?>("TransportServiceID")
                         .HasColumnType("uniqueidentifier");
 
@@ -440,13 +614,43 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.ToTable("TransportServiceComments");
                 });
 
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TransportServiceRating", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("TransportServiceID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("TransportServiceID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("TransportServiceRatings");
+                });
+
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.User", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AccountNo")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BankName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Contact")
@@ -467,11 +671,23 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("NIC")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("PasswordHash")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Verified")
+                        .HasColumnType("bit");
 
                     b.HasKey("ID");
 
@@ -488,7 +704,8 @@ namespace SuggestorCodeFirstAPI.Migrations
                             FirstName = "Sudam",
                             LastName = "Yasodya",
                             Password = "123",
-                            Role = "Admin"
+                            Role = "Admin",
+                            Verified = false
                         },
                         new
                         {
@@ -500,7 +717,8 @@ namespace SuggestorCodeFirstAPI.Migrations
                             FirstName = "Sudama",
                             LastName = "Yasodyaa",
                             Password = "1234",
-                            Role = "Customer"
+                            Role = "Customer",
+                            Verified = false
                         },
                         new
                         {
@@ -512,7 +730,8 @@ namespace SuggestorCodeFirstAPI.Migrations
                             FirstName = "Rasmi",
                             LastName = "Duli",
                             Password = "123123",
-                            Role = "ServiceProvider"
+                            Role = "ServiceProvider",
+                            Verified = false
                         });
                 });
 
@@ -520,11 +739,17 @@ namespace SuggestorCodeFirstAPI.Migrations
                 {
                     b.HasBaseType("SuggestorCodeFirstAPI.Models.Reservation");
 
+                    b.Property<int>("AdultTikets")
+                        .HasColumnType("int");
+
                     b.Property<Guid?>("EventPlannerServiceID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("EventType")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("KidTikets")
+                        .HasColumnType("int");
 
                     b.HasIndex("EventPlannerServiceID");
 
@@ -570,6 +795,9 @@ namespace SuggestorCodeFirstAPI.Migrations
 
                     b.Property<DateTime>("DropOffTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("NoOfPassengers")
+                        .HasColumnType("int");
 
                     b.Property<string>("PickUpLocation")
                         .HasColumnType("nvarchar(max)");
@@ -629,10 +857,27 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.EventPlannerServiceRating", b =>
+                {
+                    b.HasOne("SuggestorCodeFirstAPI.Models.EventPlannerService", "EventPlannerService")
+                        .WithMany("EventPlannerServiceRatings")
+                        .HasForeignKey("EventPlannerServiceID")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
+                        .WithMany("EventPlannerServiceRatings")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("EventPlannerService");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.HotelServiceRoomType", b =>
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.HotelsService", "HotelsService")
-                        .WithMany("HotelServiceRoomTypes")
+                        .WithMany()
                         .HasForeignKey("HotelsServiceID");
 
                     b.HasOne("SuggestorCodeFirstAPI.Models.RoomType", "RoomType")
@@ -648,15 +893,9 @@ namespace SuggestorCodeFirstAPI.Migrations
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.HotelsService", b =>
                 {
-                    b.HasOne("SuggestorCodeFirstAPI.Models.RoomType", "RoomType")
-                        .WithMany()
-                        .HasForeignKey("RoomTypeID");
-
                     b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("HotelsServices")
                         .HasForeignKey("UserID");
-
-                    b.Navigation("RoomType");
 
                     b.Navigation("User");
                 });
@@ -678,6 +917,23 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.HotelsServiceRating", b =>
+                {
+                    b.HasOne("SuggestorCodeFirstAPI.Models.HotelsService", "HotelsService")
+                        .WithMany("HotelsServiceRatings")
+                        .HasForeignKey("HotelsServiceID")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
+                        .WithMany("HotelsServiceRatings")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("HotelsService");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.Payment", b =>
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
@@ -685,6 +941,25 @@ namespace SuggestorCodeFirstAPI.Migrations
                         .HasForeignKey("UserID");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.PostHashTags", b =>
+                {
+                    b.HasOne("SuggestorCodeFirstAPI.Models.EventPlannerService", "EventPlannerService")
+                        .WithMany("PostHashTags")
+                        .HasForeignKey("EventPlannerServiceID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SuggestorCodeFirstAPI.Models.HashTag", "HashTag")
+                        .WithMany("PostHashTags")
+                        .HasForeignKey("HashTagID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EventPlannerService");
+
+                    b.Navigation("HashTag");
                 });
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.Reservation", b =>
@@ -728,6 +1003,23 @@ namespace SuggestorCodeFirstAPI.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TourGuideServiceRating", b =>
+                {
+                    b.HasOne("SuggestorCodeFirstAPI.Models.TourGuideService", "TourGuideService")
+                        .WithMany("TourGuideServiceRatings")
+                        .HasForeignKey("TourGuideServiceID")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
+                        .WithMany("TourGuideServiceRatings")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("TourGuideService");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TransportService", b =>
                 {
                     b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
@@ -746,6 +1038,23 @@ namespace SuggestorCodeFirstAPI.Migrations
 
                     b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
                         .WithMany("TransportServiceComments")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("TransportService");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TransportServiceRating", b =>
+                {
+                    b.HasOne("SuggestorCodeFirstAPI.Models.TransportService", "TransportService")
+                        .WithMany("TransportServiceRatings")
+                        .HasForeignKey("TransportServiceID")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("SuggestorCodeFirstAPI.Models.User", "User")
+                        .WithMany("TransportServiceRatings")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.NoAction);
 
@@ -794,14 +1103,23 @@ namespace SuggestorCodeFirstAPI.Migrations
                 {
                     b.Navigation("EventPlannerServiceComments");
 
+                    b.Navigation("EventPlannerServiceRatings");
+
                     b.Navigation("EventPlannerServiceReservations");
+
+                    b.Navigation("PostHashTags");
+                });
+
+            modelBuilder.Entity("SuggestorCodeFirstAPI.Models.HashTag", b =>
+                {
+                    b.Navigation("PostHashTags");
                 });
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.HotelsService", b =>
                 {
-                    b.Navigation("HotelServiceRoomTypes");
-
                     b.Navigation("HotelsServiceComments");
+
+                    b.Navigation("HotelsServiceRatings");
 
                     b.Navigation("HotelsServiceReservations");
                 });
@@ -825,12 +1143,16 @@ namespace SuggestorCodeFirstAPI.Migrations
                 {
                     b.Navigation("TourGuideServiceComments");
 
+                    b.Navigation("TourGuideServiceRatings");
+
                     b.Navigation("TourGuideServiceReservations");
                 });
 
             modelBuilder.Entity("SuggestorCodeFirstAPI.Models.TransportService", b =>
                 {
                     b.Navigation("TransportServiceComments");
+
+                    b.Navigation("TransportServiceRatings");
 
                     b.Navigation("TransportServiceReservations");
                 });
@@ -841,9 +1163,13 @@ namespace SuggestorCodeFirstAPI.Migrations
 
                     b.Navigation("EventPlannerServiceComment");
 
+                    b.Navigation("EventPlannerServiceRatings");
+
                     b.Navigation("EventPlannerServices");
 
                     b.Navigation("HotelsServiceComment");
+
+                    b.Navigation("HotelsServiceRatings");
 
                     b.Navigation("HotelsServices");
 
@@ -851,9 +1177,13 @@ namespace SuggestorCodeFirstAPI.Migrations
 
                     b.Navigation("TourGuideServiceComments");
 
+                    b.Navigation("TourGuideServiceRatings");
+
                     b.Navigation("TourGuideServices");
 
                     b.Navigation("TransportServiceComments");
+
+                    b.Navigation("TransportServiceRatings");
 
                     b.Navigation("TransportServices");
                 });

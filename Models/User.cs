@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace SuggestorCodeFirstAPI.Models
 {
@@ -11,10 +12,16 @@ namespace SuggestorCodeFirstAPI.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Password { get; set; }
+        public byte[] PasswordHash { get; set; }
+        public byte[] PasswordSalt { get; set; }
+        public Boolean Verified { get; set; }
         public string DOB { get; set; }
         public string Address { get; set; }
         public string Email { get; set; }
         public string Contact { get; set; }
+        public string BankName { get; set; }
+        public string AccountNo { get; set; }
+        public string NIC { get; set; }
         public string Role { get; set; }
         public string ImgURL { get; set; }
 
@@ -25,8 +32,12 @@ namespace SuggestorCodeFirstAPI.Models
         public virtual List<Reservation> Reservations { get; set; }
         public virtual List<Cancellation> Cancellations { get; set; }
         public virtual List<TransportServiceComment> TransportServiceComments { get; set; }
+        public virtual List<TransportServiceRating> TransportServiceRatings { get; set; }
         public virtual List<TourGuideServiceComment> TourGuideServiceComments { get; set; }
+        public virtual List<TourGuideServiceRating> TourGuideServiceRatings { get; set; }
         public virtual List<EventPlannerServiceComment> EventPlannerServiceComment { get; set; }
+        public virtual List<EventPlannerServiceRating> EventPlannerServiceRatings { get; set; }
         public virtual List<HotelsServiceComment> HotelsServiceComment { get; set; }
+        public virtual List<HotelsServiceRating> HotelsServiceRatings { get; set; }
     }
 }

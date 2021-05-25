@@ -52,6 +52,45 @@ namespace SuggestorCodeFirstAPI.Controllers
             return await events.ToListAsync();
         }
 
+        [HttpGet("HotelRes")]
+        public async Task<ActionResult<IEnumerable<HotelsServiceReservation>>> GetCustomHotelsServices(DateTime? arrival, DateTime? departure, Guid? serveId)
+        {
+
+
+            if ((arrival != null) && (departure != null) && (serveId != null))
+            {
+                var hotel = _context.HotelsServiceReservations.FromSqlInterpolated($"SELECT * from Reservations WHERE HotelsServiceID = {serveId} AND ((checkIn <= {arrival} AND checkOut >= {arrival}) OR (checkIn < {departure} AND checkOut >= {departure}) OR ({arrival} <= checkIn AND {departure} >= checkIn))").ToList();
+
+                return hotel;
+            }
+            else
+            {
+                return NotFound();
+            }
+
+
+        }
+
+        [HttpGet("ReservedRooms")]
+        public async Task<ActionResult<IEnumerable<HotelsServiceReservation>>> GetReservedRooms(DateTime? arrival, DateTime? departure, Guid? hotelId)
+        {
+
+
+            if ((arrival != null) && (departure != null) && (hotelId != null))
+            {
+                
+                    var roomCount = _context.HotelsServiceReservations.FromSqlInterpolated($"SELECT * FROM Reservations R WHERE R.HotelsServiceID = {hotelId} AND (checkIn <= {arrival} AND checkOut >= {arrival}) OR (checkIn < {departure} AND checkOut >= {departure}) OR ({arrival} <= checkIn AND {departure} >= checkIn)").ToList();
+
+                    return roomCount;
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+        }
+
+
         // GET: api/HotelsServiceReservations/5
         [HttpGet("{id}")]
         public async Task<ActionResult<HotelsServiceReservation>> GetHotelsServiceReservation(Guid id)

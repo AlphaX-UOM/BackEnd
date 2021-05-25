@@ -45,8 +45,7 @@ namespace SuggestorCodeFirstAPI
                 options.AddPolicy("MyCORSPolicy",
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:3000",
-                                            "http://localhost:19006")
+                        builder.WithOrigins(Configuration.GetSection("AllowedOrigins").Get<string[]>())
                                             .AllowAnyHeader()
                                             .AllowAnyMethod();
                     });
@@ -54,6 +53,7 @@ namespace SuggestorCodeFirstAPI
             });
 
             services.AddControllers();
+            services.AddSwaggerGen();
 
             services.AddControllersWithViews()
     .AddNewtonsoftJson(options =>
@@ -93,17 +93,22 @@ namespace SuggestorCodeFirstAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors("MyCORSPolicy");
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
    
             app.UseRouting();
+            app.UseCors("MyCORSPolicy");
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Vvisit API V1");
+            });
 
             app.UseAuthentication();
 
